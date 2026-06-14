@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abderrahim Fakir — Automation &amp; AI Workflow Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0a0c;
+    --bg-elev: #141418;
+    --bg-elev-2: #1c1c21;
+    --text: #f2f1ee;
+    --text-muted: #8b8b93;
+    --line: #26262b;
+    --accent: #ff6d5a;
+    --accent-soft: rgba(255,109,90,0.12);
+    --accent-dim: rgba(255,109,90,0.35);
+    --maxw: 1180px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- background grid texture ---------- */
+  .bg-grid{
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events:none;
+    z-index:0;
+    mask-image: radial-gradient(circle at 70% 20%, rgba(0,0,0,0.9), transparent 65%);
+  }
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:50;
+    background:rgba(10,10,12,0.7);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 32px;
+  }
+  .nav-logo{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:500;
+    font-size:15px;
+    letter-spacing:0.02em;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .nav-logo-dot{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:36px;
+    font-size:14px;
+    color:var(--text-muted);
+  }
+  .nav-links a{ transition:color .2s; }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-cta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    padding:9px 18px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    color:var(--text);
+    transition:border-color .2s, background .2s;
+  }
+  .nav-cta:hover{ border-color:var(--accent-dim); background:var(--accent-soft); }
+  .nav-toggle{ display:none; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:160px 0 110px;
+    overflow:hidden;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:48px;
+    align-items:center;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--accent);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:18px; height:1px;
+    background:var(--accent);
+  }
+  .hero h1{
+    font-size:56px;
+    font-weight:700;
+    line-height:1.12;
+    letter-spacing:-0.01em;
+    margin-bottom:24px;
+  }
+  .hero h1 .accent{ color:var(--accent); }
+  .hero p{
+    font-size:17px;
+    color:var(--text-muted);
+    max-width:480px;
+    margin-bottom:36px;
+  }
+  .btn-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    padding:13px 26px;
+    border-radius:6px;
+    transition:transform .15s, background .2s, border-color .2s, color .2s;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn-primary{
+    background:var(--text);
+    color:var(--bg);
+  }
+  .btn-primary:hover{ background:var(--accent); color:var(--bg); transform:translateY(-1px); }
+  .btn-ghost{
+    border:1px solid var(--line);
+    color:var(--text);
+  }
+  .btn-ghost:hover{ border-color:var(--text-muted); transform:translateY(-1px); }
+
+  /* ---------- hero portrait (signature element) ---------- */
+  .hero-portrait{
+    position:relative;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:#0c0c0e;
+    aspect-ratio:0.88/1;
+  }
+  .hero-portrait img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+  .hero-portrait::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, transparent 55%, rgba(10,10,12,0.85) 100%);
+    pointer-events:none;
+  }
+  .status-badge{
+    position:absolute;
+    bottom:18px;
+    left:18px;
+    right:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 16px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:rgba(10,10,12,0.65);
+    backdrop-filter:blur(10px);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--text-muted);
+    z-index:1;
+  }
+  .status-dot-anim{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);
+    animation:pulse 2s ease-in-out infinite;
+    flex-shrink:0;
+  }
+  @keyframes pulse{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:0.35; }
+  }
+
+  /* ---------- floating languages diagram ---------- */
+  .lang-float{
+    position:absolute;
+    top:-22px;
+    right:-22px;
+    width:172px;
+    padding:14px 14px 10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(12,12,15,0.78);
+    backdrop-filter:blur(12px);
+    z-index:2;
+    box-shadow:0 12px 30px rgba(0,0,0,0.4);
+  }
+  .lang-float-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin-bottom:6px;
+  }
+  .lang-float svg{ width:100%; height:auto; display:block; }
+  .lang-node{ fill:var(--bg-elev-2); stroke:var(--line); stroke-width:1.4; }
+  .lang-node-core{ fill:var(--accent); }
+  .lang-node-text{
+    font-family:'JetBrains Mono', monospace;
+    font-size:9px;
+    fill:var(--text-muted);
+    text-anchor:middle;
+  }
+  .lang-node-text-core{ fill:var(--bg); font-weight:600; }
+  .lang-edge{
+    stroke:var(--line);
+    stroke-width:1.2;
+    fill:none;
+  }
+  .lang-edge-flow{
+    stroke:var(--accent);
+    stroke-width:1.2;
+    fill:none;
+    stroke-dasharray:3 7;
+    opacity:0.8;
+    animation:lang-flow 3s linear infinite;
+  }
+  @keyframes lang-flow{ to{ stroke-dashoffset:-100; } }
+
+  /* ---------- section shells ---------- */
+  section{ padding:108px 0; border-top:1px solid var(--line); }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:56px;
+    flex-wrap:wrap;
+  }
+  .section-head h2{
+    font-size:36px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .section-note{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--text-muted);
+    text-align:right;
+    max-width:280px;
+  }
+
+  /* ---------- work / projects ---------- */
+  .project{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:32px;
+    margin-bottom:20px;
+    background:var(--bg-elev);
+    transition:border-color .2s, transform .2s;
+  }
+  .project:hover{ border-color:var(--accent-dim); transform:translateY(-2px); }
+  .project-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .project-status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .status-dot{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 3px var(--accent-soft);
+  }
+  .project h3{
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .project p{
+    color:var(--text-muted);
+    font-size:15px;
+    max-width:680px;
+    margin-bottom:18px;
+  }
+  .tag-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--text-muted);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:5px 11px;
+    background:var(--bg-elev-2);
+  }
+
+  /* ---------- stack ---------- */
+  .stack-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+  }
+  .stack-item{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:24px 20px;
+    background:var(--bg-elev);
+    transition:border-color .2s, transform .2s;
+  }
+  .stack-item:hover{ border-color:var(--accent-dim); transform:translateY(-2px); }
+  .stack-item .stack-name{
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .stack-item .stack-desc{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--text-muted);
+    line-height:1.5;
+  }
+
+  /* ---------- about / education ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:60px;
+  }
+  .about-grid p{
+    color:var(--text-muted);
+    font-size:16px;
+    margin-bottom:18px;
+    max-width:520px;
+  }
+  .lang-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .edu-card{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:28px;
+    background:var(--bg-elev);
+  }
+  .edu-card .edu-org{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    margin-bottom:8px;
+  }
+  .edu-card h3{
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .edu-stats{
+    display:flex;
+    gap:28px;
+    margin-top:18px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+  }
+  .edu-stat .stat-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:24px;
+    font-weight:500;
+    color:var(--text);
+  }
+  .edu-stat .stat-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-top:4px;
+  }
+
+  /* ---------- contact / footer ---------- */
+  .contact{
+    text-align:center;
+  }
+  .contact h2{
+    font-size:44px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin-bottom:18px;
+  }
+  .contact p{
+    color:var(--text-muted);
+    font-size:16px;
+    margin-bottom:36px;
+  }
+  .contact-email{
+    font-family:'JetBrains Mono', monospace;
+    font-size:20px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:16px 28px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    transition:border-color .2s, background .2s;
+  }
+  .contact-email:hover{ border-color:var(--accent-dim); background:var(--accent-soft); }
+  footer{
+    border-top:1px solid var(--line);
+    padding:32px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--text-muted);
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero-inner{ grid-template-columns:1fr; }
+    .hero-portrait{ max-width:380px; margin:0 auto; order:-1; aspect-ratio:0.88/1; }
+    .hero h1{ font-size:42px; }
+    .about-grid{ grid-template-columns:1fr; gap:40px; }
+    .stack-grid{ grid-template-columns:repeat(2, 1fr); }
+    .nav-links{ display:none; }
+  }
+  @media (max-width:560px){
+    .wrap{ padding:0 20px; }
+    .hero{ padding:130px 0 70px; }
+    .hero h1{ font-size:34px; }
+    .section-head{ flex-direction:column; align-items:flex-start; }
+    .section-note{ text-align:left; }
+    .stack-grid{ grid-template-columns:1fr; }
+    .edu-stats{ gap:18px; }
+    .contact h2{ font-size:32px; }
+    .lang-float{ top:14px; right:14px; width:128px; padding:10px 10px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo"><span class="nav-logo-dot"></span> AF / abderrahim.fakir</div>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#stack">Stack</a>
+      <a href="#about">About</a>
+    </div>
+    <a class="nav-cta" href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero wrap">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">// trigger — abderrahim fakir</div>
+      <h1>Building <span class="accent">AI agents</span> and automation workflows that ship.</h1>
+      <p>Computer Science student at NJUPT focused on practical automation — n8n pipelines, Python tooling, and AI-agent workflows that turn raw data into decisions, with Git, Docker and clean code underneath.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#contact">Contact me</a>
+        <a class="btn btn-ghost" href="#work">View projects</a>
+      </div>
+    </div>
+
+    <div class="hero-portrait">
+      <img src="portrait.png" alt="Illustrated portrait of Abderrahim Fakir">
+
+      <div class="lang-float">
+        <div class="lang-float-label">// languages</div>
+        <svg viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
+          <path class="lang-edge" d="M70,55 L34,24" />
+          <path class="lang-edge" d="M70,55 L106,24" />
+          <path class="lang-edge" d="M70,55 L70,96" />
+          <path class="lang-edge-flow" d="M70,55 L34,24" />
+          <path class="lang-edge-flow" d="M70,55 L106,24" />
+          <path class="lang-edge-flow" d="M70,55 L70,96" />
+
+          <circle class="lang-node" cx="34" cy="24" r="20" />
+          <text class="lang-node-text" x="34" y="27">python</text>
+
+          <circle class="lang-node" cx="106" cy="24" r="20" />
+          <text class="lang-node-text" x="106" y="27">c++</text>
+
+          <circle class="lang-node" cx="70" cy="96" r="20" />
+          <text class="lang-node-text" x="70" y="99">json</text>
+
+          <circle class="lang-node lang-node-core" cx="70" cy="55" r="22" />
+          <text class="lang-node-text lang-node-text-core" x="70" y="59">code</text>
+        </svg>
+      </div>
+
+      <div class="status-badge">
+        <span class="status-dot-anim"></span>
+        available for automation &amp; AI workflow projects
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ WORK ============ -->
+<section id="work" class="wrap">
+  <div class="section-head">
+    <h2>Things I've automated</h2>
+    <div class="section-note">// process — selected projects where data goes in, decisions and insight come out.</div>
+  </div>
+
+  <div class="project">
+    <div class="project-top">
+      <div class="project-status"><span class="status-dot"></span> deployed</div>
+    </div>
+    <h3>Automated Data Intelligence Agent</h3>
+    <p>An n8n workflow that automates multi-source data collection and real-time probability analysis. It identifies the best opportunities and delivers actionable insights straight to Telegram and Discord — turning a manual research routine into a fast, hands-off decision loop.</p>
+    <div class="tag-row">
+      <span class="tag">n8n</span>
+      <span class="tag">workflow automation</span>
+      <span class="tag">telegram api</span>
+      <span class="tag">discord api</span>
+      <span class="tag">real-time data</span>
+    </div>
+  </div>
+
+  <div class="project">
+    <div class="project-top">
+      <div class="project-status"><span class="status-dot"></span> shipped</div>
+    </div>
+    <h3>Predictive Academic Analytics Engine</h3>
+    <p>A Python machine learning application that automates scholarship evaluation using historical academic data. It predicts student performance with strong accuracy, converting raw records into insights usable for academic planning and resource allocation.</p>
+    <div class="tag-row">
+      <span class="tag">python</span>
+      <span class="tag">machine learning</span>
+      <span class="tag">data analysis</span>
+      <span class="tag">predictive modeling</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STACK ============ -->
+<section id="stack" class="wrap">
+  <div class="section-head">
+    <h2>Tools I work with</h2>
+    <div class="section-note">// process — the languages, platforms and AI tooling behind the work above.</div>
+  </div>
+
+  <div class="stack-grid">
+    <div class="stack-item">
+      <div class="stack-name">Python</div>
+      <div class="stack-desc">Scripting, automation &amp; ML applications</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-name">C++</div>
+      <div class="stack-desc">Core programming &amp; data structures</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-name">Git</div>
+      <div class="stack-desc">Version control &amp; collaborative workflows</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-name">Docker</div>
+      <div class="stack-desc">Containerized environments &amp; deployment</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-name">n8n</div>
+      <div class="stack-desc">Workflow automation &amp; integrations</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-name">JSON</div>
+      <div class="stack-desc">Data interchange &amp; API workflows</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-name">AI Agents</div>
+      <div class="stack-desc">Claude &amp; Codex for agentic coding</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-name">Workflows</div>
+      <div class="stack-desc">End-to-end pipeline design</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT / EDUCATION ============ -->
+<section id="about" class="wrap">
+  <div class="section-head">
+    <h2>About</h2>
+    <div class="section-note">// output — background, education and where I'm based.</div>
+  </div>
+
+  <div class="about-grid">
+    <div>
+      <p>I'm a Computer Science student who likes turning repetitive, manual work into systems that run on their own — whether that's a workflow that watches data sources around the clock, or a model that turns historical records into predictions.</p>
+      <p>I work comfortably across Python and C++, manage projects with Git, ship things in Docker, and lean on AI agents like Claude and Codex to move faster without cutting corners on code quality.</p>
+      <p class="mono" style="font-size:13px; color:var(--text-muted); margin-top:32px;">Languages</p>
+      <div class="lang-row">
+        <span class="tag">Arabic — native</span>
+        <span class="tag">English — fluent</span>
+        <span class="tag">French — intermediate</span>
+        <span class="tag">Chinese — basics</span>
+      </div>
+    </div>
+
+    <div class="edu-card">
+      <div class="edu-org">Nanjing University of Posts and Telecommunications</div>
+      <h3>Bachelor of Computer Science</h3>
+      <p style="color:var(--text-muted); font-size:14px;">2024 — Present, Nanjing, Qixia District</p>
+      <div class="edu-stats">
+        <div class="edu-stat">
+          <div class="stat-num">3.98</div>
+          <div class="stat-label">GPA</div>
+        </div>
+        <div class="edu-stat">
+          <div class="stat-num">2x</div>
+          <div class="stat-label">First-class scholarship</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="wrap contact">
+  <div class="eyebrow" style="justify-content:center;">// output</div>
+  <h2>Let's build something automated.</h2>
+  <p>Open to collaborations, internships, and automation projects.</p>
+  <a class="contact-email" href="mailto:af.business.manager@gmail.com">
+    af.business.manager@gmail.com
+  </a>
+</section>
+
+<footer class="wrap">
+  <div>© 2026 Abderrahim Fakir</div>
+  <div>Nanjing, China · NJUPT</div>
+</footer>
+
+</body>
+</html>
