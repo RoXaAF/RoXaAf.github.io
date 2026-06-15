@@ -15,9 +15,10 @@
     --text: #f2f1ee;
     --text-muted: #8b8b93;
     --line: #26262b;
-    --accent: #ff6d5a;
-    --accent-soft: rgba(255,109,90,0.12);
-    --accent-dim: rgba(255,109,90,0.35);
+    --accent: #6fa3e0;
+    --accent-soft: rgba(111,163,224,0.12);
+    --accent-dim: rgba(111,163,224,0.35);
+    --silver: #c7ccd3;
     --maxw: 1180px;
   }
 
@@ -114,6 +115,8 @@
     overflow:hidden;
   }
   .hero-inner{
+    position:relative;
+    z-index:1;
     display:grid;
     grid-template-columns:1.05fr 0.95fr;
     gap:48px;
@@ -224,53 +227,6 @@
     50%{ opacity:0.35; }
   }
 
-  /* ---------- floating languages diagram ---------- */
-  .lang-float{
-    position:absolute;
-    top:-22px;
-    right:-22px;
-    width:172px;
-    padding:14px 14px 10px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    background:rgba(12,12,15,0.78);
-    backdrop-filter:blur(12px);
-    z-index:2;
-    box-shadow:0 12px 30px rgba(0,0,0,0.4);
-  }
-  .lang-float-label{
-    font-family:'JetBrains Mono', monospace;
-    font-size:10px;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--text-muted);
-    margin-bottom:6px;
-  }
-  .lang-float svg{ width:100%; height:auto; display:block; }
-  .lang-node{ fill:var(--bg-elev-2); stroke:var(--line); stroke-width:1.4; }
-  .lang-node-core{ fill:var(--accent); }
-  .lang-node-text{
-    font-family:'JetBrains Mono', monospace;
-    font-size:9px;
-    fill:var(--text-muted);
-    text-anchor:middle;
-  }
-  .lang-node-text-core{ fill:var(--bg); font-weight:600; }
-  .lang-edge{
-    stroke:var(--line);
-    stroke-width:1.2;
-    fill:none;
-  }
-  .lang-edge-flow{
-    stroke:var(--accent);
-    stroke-width:1.2;
-    fill:none;
-    stroke-dasharray:3 7;
-    opacity:0.8;
-    animation:lang-flow 3s linear infinite;
-  }
-  @keyframes lang-flow{ to{ stroke-dashoffset:-100; } }
-
   /* ---------- section shells ---------- */
   section{ padding:108px 0; border-top:1px solid var(--line); }
   .section-head{
@@ -303,7 +259,7 @@
     background:var(--bg-elev);
     transition:border-color .2s, transform .2s;
   }
-  .project:hover{ border-color:var(--accent-dim); transform:translateY(-2px); }
+  .project:hover{ border-color:var(--accent-dim); }
   .project-top{
     display:flex;
     justify-content:space-between;
@@ -363,7 +319,7 @@
     background:var(--bg-elev);
     transition:border-color .2s, transform .2s;
   }
-  .stack-item:hover{ border-color:var(--accent-dim); transform:translateY(-2px); }
+  .stack-item:hover{ border-color:var(--accent-dim); }
   .stack-item .stack-name{
     font-size:17px;
     font-weight:600;
@@ -475,7 +431,99 @@
     gap:12px;
   }
 
-  /* ---------- responsive ---------- */
+  /* ---------- React Bits: Target Cursor ---------- */
+  .target-cursor-wrapper{
+    position:fixed;
+    top:0; left:0;
+    width:0; height:0;
+    pointer-events:none;
+    z-index:9999;
+    mix-blend-mode:difference;
+    transform:translate(-50%, -50%);
+  }
+  .target-cursor-dot{
+    position:absolute;
+    left:50%; top:50%;
+    width:4px; height:4px;
+    background:#fff;
+    border-radius:50%;
+    transform:translate(-50%, -50%);
+    will-change:transform;
+  }
+  .target-cursor-corner{
+    position:absolute;
+    left:50%; top:50%;
+    width:12px; height:12px;
+    border:3px solid #fff;
+    will-change:transform;
+  }
+  .corner-tl{ transform:translate(-150%, -150%); border-right:none; border-bottom:none; }
+  .corner-tr{ transform:translate(50%, -150%); border-left:none; border-bottom:none; }
+  .corner-br{ transform:translate(50%, 50%); border-left:none; border-top:none; }
+  .corner-bl{ transform:translate(-150%, 50%); border-right:none; border-top:none; }
+
+  /* ---------- React Bits: Magic Bento (glow + spotlight + particles) ---------- */
+  .magic-card{
+    --glow-x:50%;
+    --glow-y:50%;
+    --glow-intensity:0;
+    --glow-radius:220px;
+    --glow-rgb:111,163,224;
+    position:relative;
+    overflow:hidden;
+  }
+  .magic-card::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    padding:1px;
+    background:radial-gradient(var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+      rgba(var(--glow-rgb), calc(var(--glow-intensity) * 0.85)) 0%,
+      rgba(var(--glow-rgb), calc(var(--glow-intensity) * 0.35)) 35%,
+      transparent 65%);
+    border-radius:inherit;
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite:exclude;
+    pointer-events:none;
+    z-index:2;
+  }
+  .global-spotlight{
+    position:fixed;
+    width:700px; height:700px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:5;
+    opacity:0;
+    transform:translate(-50%, -50%);
+    mix-blend-mode:screen;
+    background:radial-gradient(circle,
+      rgba(111,163,224,0.18) 0%,
+      rgba(199,204,211,0.09) 18%,
+      rgba(111,163,224,0.03) 32%,
+      transparent 65%);
+  }
+  .bento-particle{
+    position:absolute;
+    width:4px; height:4px;
+    border-radius:50%;
+    background:rgba(199,204,211,0.95);
+    box-shadow:0 0 6px rgba(111,163,224,0.7);
+    pointer-events:none;
+    z-index:3;
+  }
+
+  /* ---------- React Bits: PixelBlast full-page background ---------- */
+  .bg-pixels{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    opacity:0.55;
+    mix-blend-mode:screen;
+    pointer-events:none;
+  }
+  .bg-pixels canvas{ display:block; width:100%; height:100%; }
   @media (max-width:900px){
     .hero-inner{ grid-template-columns:1fr; }
     .hero-portrait{ max-width:380px; margin:0 auto; order:-1; aspect-ratio:0.88/1; }
@@ -493,23 +541,23 @@
     .stack-grid{ grid-template-columns:1fr; }
     .edu-stats{ gap:18px; }
     .contact h2{ font-size:32px; }
-    .lang-float{ top:14px; right:14px; width:128px; padding:10px 10px 6px; }
   }
 </style>
 </head>
 <body>
 
 <div class="bg-grid"></div>
+<div class="bg-pixels" id="bgPixels"></div>
 
 <nav class="nav">
   <div class="nav-inner">
     <div class="nav-logo"><span class="nav-logo-dot"></span> AF / abderrahim.fakir</div>
     <div class="nav-links">
-      <a href="#work">Work</a>
-      <a href="#stack">Stack</a>
-      <a href="#about">About</a>
+      <a class="cursor-target" href="#work">Work</a>
+      <a class="cursor-target" href="#stack">Stack</a>
+      <a class="cursor-target" href="#about">About</a>
     </div>
-    <a class="nav-cta" href="#contact">Contact</a>
+    <a class="nav-cta cursor-target" href="#contact">Contact</a>
   </div>
 </nav>
 
@@ -521,37 +569,13 @@
       <h1>Building <span class="accent">AI agents</span> and automation workflows that ship.</h1>
       <p>Computer Science student at NJUPT focused on practical automation — n8n pipelines, Python tooling, and AI-agent workflows that turn raw data into decisions, with Git, Docker and clean code underneath.</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href="#contact">Contact me</a>
-        <a class="btn btn-ghost" href="#work">View projects</a>
+        <a class="btn btn-primary cursor-target" href="#contact">Contact me</a>
+        <a class="btn btn-ghost cursor-target" href="#work">View projects</a>
       </div>
     </div>
 
     <div class="hero-portrait">
       <img src="portrait.png" alt="Illustrated portrait of Abderrahim Fakir">
-
-      <div class="lang-float">
-        <div class="lang-float-label">// languages</div>
-        <svg viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
-          <path class="lang-edge" d="M70,55 L34,24" />
-          <path class="lang-edge" d="M70,55 L106,24" />
-          <path class="lang-edge" d="M70,55 L70,96" />
-          <path class="lang-edge-flow" d="M70,55 L34,24" />
-          <path class="lang-edge-flow" d="M70,55 L106,24" />
-          <path class="lang-edge-flow" d="M70,55 L70,96" />
-
-          <circle class="lang-node" cx="34" cy="24" r="20" />
-          <text class="lang-node-text" x="34" y="27">python</text>
-
-          <circle class="lang-node" cx="106" cy="24" r="20" />
-          <text class="lang-node-text" x="106" y="27">c++</text>
-
-          <circle class="lang-node" cx="70" cy="96" r="20" />
-          <text class="lang-node-text" x="70" y="99">json</text>
-
-          <circle class="lang-node lang-node-core" cx="70" cy="55" r="22" />
-          <text class="lang-node-text lang-node-text-core" x="70" y="59">code</text>
-        </svg>
-      </div>
 
       <div class="status-badge">
         <span class="status-dot-anim"></span>
@@ -568,7 +592,7 @@
     <div class="section-note">// process — selected projects where data goes in, decisions and insight come out.</div>
   </div>
 
-  <div class="project">
+  <div class="project magic-card cursor-target">
     <div class="project-top">
       <div class="project-status"><span class="status-dot"></span> deployed</div>
     </div>
@@ -583,7 +607,7 @@
     </div>
   </div>
 
-  <div class="project">
+  <div class="project magic-card cursor-target">
     <div class="project-top">
       <div class="project-status"><span class="status-dot"></span> shipped</div>
     </div>
@@ -606,35 +630,35 @@
   </div>
 
   <div class="stack-grid">
-    <div class="stack-item">
+    <div class="stack-item magic-card cursor-target">
       <div class="stack-name">Python</div>
       <div class="stack-desc">Scripting, automation &amp; ML applications</div>
     </div>
-    <div class="stack-item">
+    <div class="stack-item magic-card cursor-target">
       <div class="stack-name">C++</div>
       <div class="stack-desc">Core programming &amp; data structures</div>
     </div>
-    <div class="stack-item">
+    <div class="stack-item magic-card cursor-target">
       <div class="stack-name">Git</div>
       <div class="stack-desc">Version control &amp; collaborative workflows</div>
     </div>
-    <div class="stack-item">
+    <div class="stack-item magic-card cursor-target">
       <div class="stack-name">Docker</div>
       <div class="stack-desc">Containerized environments &amp; deployment</div>
     </div>
-    <div class="stack-item">
+    <div class="stack-item magic-card cursor-target">
       <div class="stack-name">n8n</div>
       <div class="stack-desc">Workflow automation &amp; integrations</div>
     </div>
-    <div class="stack-item">
+    <div class="stack-item magic-card cursor-target">
       <div class="stack-name">JSON</div>
       <div class="stack-desc">Data interchange &amp; API workflows</div>
     </div>
-    <div class="stack-item">
+    <div class="stack-item magic-card cursor-target">
       <div class="stack-name">AI Agents</div>
       <div class="stack-desc">Claude &amp; Codex for agentic coding</div>
     </div>
-    <div class="stack-item">
+    <div class="stack-item magic-card cursor-target">
       <div class="stack-name">Workflows</div>
       <div class="stack-desc">End-to-end pipeline design</div>
     </div>
@@ -684,7 +708,7 @@
   <div class="eyebrow" style="justify-content:center;">// output</div>
   <h2>Let's build something automated.</h2>
   <p>Open to collaborations, internships, and automation projects.</p>
-  <a class="contact-email" href="mailto:af.business.manager@gmail.com">
+  <a class="contact-email cursor-target" href="mailto:af.business.manager@gmail.com">
     af.business.manager@gmail.com
   </a>
 </section>
@@ -693,6 +717,500 @@
   <div>© 2026 Abderrahim Fakir</div>
   <div>Nanjing, China · NJUPT</div>
 </footer>
+
+<!-- ============ TARGET CURSOR (React Bits, ported to vanilla JS) ============ -->
+<div class="target-cursor-wrapper" id="targetCursor">
+  <div class="target-cursor-dot"></div>
+  <div class="target-cursor-corner corner-tl"></div>
+  <div class="target-cursor-corner corner-tr"></div>
+  <div class="target-cursor-corner corner-br"></div>
+  <div class="target-cursor-corner corner-bl"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function(){
+  // ---------- Target Cursor ----------
+  const hasTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  const isSmallScreen = window.innerWidth <= 768;
+  const cursor = document.getElementById('targetCursor');
+
+  if (typeof gsap === 'undefined' || !cursor) return;
+
+  if (hasTouch && isSmallScreen) {
+    cursor.remove();
+  } else {
+    document.body.style.cursor = 'none';
+    const corners = cursor.querySelectorAll('.target-cursor-corner');
+    const dot = cursor.querySelector('.target-cursor-dot');
+    const spinDuration = 2.6;
+    const cornerSize = 12;
+    const border = 3;
+    let spinTl = null;
+    let activeTarget = null;
+    let resumeTimeout = null;
+
+    const resetPositions = [
+      { x: -cornerSize * 1.5, y: -cornerSize * 1.5 },
+      { x: cornerSize * 0.5, y: -cornerSize * 1.5 },
+      { x: cornerSize * 0.5, y: cornerSize * 0.5 },
+      { x: -cornerSize * 1.5, y: cornerSize * 0.5 }
+    ];
+
+    gsap.set(cursor, {
+      xPercent: -50,
+      yPercent: -50,
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2
+    });
+
+    function createSpin(){
+      if (spinTl) spinTl.kill();
+      spinTl = gsap.timeline({ repeat: -1 }).to(cursor, { rotation: '+=360', duration: spinDuration, ease: 'none' });
+    }
+    createSpin();
+
+    function cornerPositions(target){
+      const rect = target.getBoundingClientRect();
+      const cursorX = gsap.getProperty(cursor, 'x');
+      const cursorY = gsap.getProperty(cursor, 'y');
+      return [
+        { x: rect.left - border - cursorX, y: rect.top - border - cursorY },
+        { x: rect.right + border - cornerSize - cursorX, y: rect.top - border - cursorY },
+        { x: rect.right + border - cornerSize - cursorX, y: rect.bottom + border - cornerSize - cursorY },
+        { x: rect.left - border - cursorX, y: rect.bottom + border - cornerSize - cursorY }
+      ];
+    }
+
+    window.addEventListener('mousemove', e => {
+      gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'power3.out' });
+    });
+
+    window.addEventListener('mousedown', () => {
+      gsap.to(dot, { scale: 0.7, duration: 0.3 });
+      gsap.to(cursor, { scale: 0.9, duration: 0.2 });
+    });
+    window.addEventListener('mouseup', () => {
+      gsap.to(dot, { scale: 1, duration: 0.3 });
+      gsap.to(cursor, { scale: 1, duration: 0.2 });
+    });
+
+    window.addEventListener('scroll', () => {
+      if (!activeTarget) return;
+      const positions = cornerPositions(activeTarget);
+      corners.forEach((corner, i) => gsap.to(corner, { x: positions[i].x, y: positions[i].y, duration: 0.2, ease: 'power2.out' }));
+    }, { passive: true });
+
+    document.querySelectorAll('.cursor-target').forEach(target => {
+      target.addEventListener('mouseenter', () => {
+        if (activeTarget === target) return;
+        if (resumeTimeout) { clearTimeout(resumeTimeout); resumeTimeout = null; }
+
+        activeTarget = target;
+        gsap.killTweensOf(cursor, 'rotation');
+        if (spinTl) spinTl.pause();
+        gsap.set(cursor, { rotation: 0 });
+
+        const positions = cornerPositions(target);
+        corners.forEach((corner, i) => gsap.to(corner, { x: positions[i].x, y: positions[i].y, duration: 0.3, ease: 'power2.out' }));
+      });
+
+      target.addEventListener('mouseleave', () => {
+        if (activeTarget !== target) return;
+        activeTarget = null;
+
+        corners.forEach((corner, i) => gsap.to(corner, { x: resetPositions[i].x, y: resetPositions[i].y, duration: 0.3, ease: 'power3.out' }));
+
+        resumeTimeout = setTimeout(() => {
+          if (activeTarget) return;
+          const currentRotation = gsap.getProperty(cursor, 'rotation');
+          const normalized = ((currentRotation % 360) + 360) % 360;
+          gsap.to(cursor, {
+            rotation: normalized + 360,
+            duration: spinDuration * (1 - normalized / 360),
+            ease: 'none',
+            onComplete: createSpin
+          });
+        }, 50);
+      });
+    });
+  }
+
+  // ---------- Magic Bento: spotlight + border glow + tilt + magnetism + particles ----------
+  const cards = document.querySelectorAll('.magic-card');
+  if (cards.length) {
+    const spotlightRadius = 300;
+    const proximity = spotlightRadius * 0.5;
+    const fadeDistance = spotlightRadius * 0.75;
+
+    const spotlight = document.createElement('div');
+    spotlight.className = 'global-spotlight';
+    document.body.appendChild(spotlight);
+
+    document.addEventListener('mousemove', e => {
+      let minDistance = Infinity;
+
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const distance = Math.hypot(e.clientX - centerX, e.clientY - centerY) - Math.max(rect.width, rect.height) / 2;
+        const effDist = Math.max(0, distance);
+        minDistance = Math.min(minDistance, effDist);
+
+        let intensity = 0;
+        if (effDist <= proximity) intensity = 1;
+        else if (effDist <= fadeDistance) intensity = (fadeDistance - effDist) / (fadeDistance - proximity);
+
+        const relX = ((e.clientX - rect.left) / rect.width) * 100;
+        const relY = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--glow-x', relX + '%');
+        card.style.setProperty('--glow-y', relY + '%');
+        card.style.setProperty('--glow-intensity', intensity);
+      });
+
+      if (!hasTouch) {
+        gsap.to(spotlight, { left: e.clientX, top: e.clientY, duration: 0.1, ease: 'power2.out' });
+        const targetOpacity = minDistance <= proximity
+          ? 0.8
+          : minDistance <= fadeDistance
+            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
+            : 0;
+        gsap.to(spotlight, { opacity: targetOpacity, duration: targetOpacity > 0 ? 0.2 : 0.5, ease: 'power2.out' });
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      cards.forEach(card => card.style.setProperty('--glow-intensity', '0'));
+      gsap.to(spotlight, { opacity: 0, duration: 0.3, ease: 'power2.out' });
+    });
+
+    if (!hasTouch) {
+      cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const cx = rect.width / 2;
+          const cy = rect.height / 2;
+
+          gsap.to(card, {
+            rotateX: ((y - cy) / cy) * -5,
+            rotateY: ((x - cx) / cx) * 5,
+            x: (x - cx) * 0.04,
+            y: (y - cy) * 0.04,
+            duration: 0.3,
+            ease: 'power2.out',
+            transformPerspective: 800
+          });
+        });
+
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, { rotateX: 0, rotateY: 0, x: 0, y: 0, duration: 0.4, ease: 'power2.out' });
+          gsap.to(card.querySelectorAll('.bento-particle'), {
+            scale: 0, opacity: 0, duration: 0.3, ease: 'back.in(1.7)',
+            onComplete: function(){ this.targets().forEach(p => p.remove()); }
+          });
+        });
+
+        card.addEventListener('mouseenter', () => {
+          for (let i = 0; i < 5; i++) {
+            const p = document.createElement('div');
+            p.className = 'bento-particle';
+            p.style.left = (10 + Math.random() * 80) + '%';
+            p.style.top = (10 + Math.random() * 80) + '%';
+            card.appendChild(p);
+            gsap.fromTo(p, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' });
+            gsap.to(p, { x: (Math.random() - 0.5) * 60, y: (Math.random() - 0.5) * 60, duration: 2 + Math.random() * 2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+            gsap.to(p, { opacity: 0.25, duration: 1.2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+          }
+        });
+      });
+    }
+  }
+})();
+</script>
+
+<!-- ============ PIXELBLAST BACKGROUND (React Bits, three.js) ============ -->
+<script type="module">
+(async () => {
+  const container = document.getElementById('bgPixels');
+  if (!container) return;
+
+  try {
+    const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
+
+    const SHAPE_MAP = { square: 0, circle: 1, triangle: 2, diamond: 3 };
+    const MAX_CLICKS = 10;
+
+    const VERTEX_SRC = `
+void main() {
+  gl_Position = vec4(position, 1.0);
+}
+`;
+
+    const FRAGMENT_SRC = `
+precision highp float;
+
+uniform vec3  uColor;
+uniform vec2  uResolution;
+uniform float uTime;
+uniform float uPixelSize;
+uniform float uScale;
+uniform float uDensity;
+uniform float uPixelJitter;
+uniform int   uEnableRipples;
+uniform float uRippleSpeed;
+uniform float uRippleThickness;
+uniform float uRippleIntensity;
+uniform float uEdgeFade;
+
+uniform int   uShapeType;
+const int SHAPE_SQUARE   = 0;
+const int SHAPE_CIRCLE   = 1;
+const int SHAPE_TRIANGLE = 2;
+const int SHAPE_DIAMOND  = 3;
+
+const int   MAX_CLICKS = 10;
+
+uniform vec2  uClickPos  [MAX_CLICKS];
+uniform float uClickTimes[MAX_CLICKS];
+
+out vec4 fragColor;
+
+float Bayer2(vec2 a) {
+  a = floor(a);
+  return fract(a.x / 2. + a.y * a.y * .75);
+}
+#define Bayer4(a) (Bayer2(.5*(a))*0.25 + Bayer2(a))
+#define Bayer8(a) (Bayer4(.5*(a))*0.25 + Bayer2(a))
+
+#define FBM_OCTAVES     5
+#define FBM_LACUNARITY  1.25
+#define FBM_GAIN        1.0
+
+float hash11(float n){ return fract(sin(n)*43758.5453); }
+
+float vnoise(vec3 p){
+  vec3 ip = floor(p);
+  vec3 fp = fract(p);
+  float n000 = hash11(dot(ip + vec3(0.0,0.0,0.0), vec3(1.0,57.0,113.0)));
+  float n100 = hash11(dot(ip + vec3(1.0,0.0,0.0), vec3(1.0,57.0,113.0)));
+  float n010 = hash11(dot(ip + vec3(0.0,1.0,0.0), vec3(1.0,57.0,113.0)));
+  float n110 = hash11(dot(ip + vec3(1.0,1.0,0.0), vec3(1.0,57.0,113.0)));
+  float n001 = hash11(dot(ip + vec3(0.0,0.0,1.0), vec3(1.0,57.0,113.0)));
+  float n101 = hash11(dot(ip + vec3(1.0,0.0,1.0), vec3(1.0,57.0,113.0)));
+  float n011 = hash11(dot(ip + vec3(0.0,1.0,1.0), vec3(1.0,57.0,113.0)));
+  float n111 = hash11(dot(ip + vec3(1.0,1.0,1.0), vec3(1.0,57.0,113.0)));
+  vec3 w = fp*fp*fp*(fp*(fp*6.0-15.0)+10.0);
+  float x00 = mix(n000, n100, w.x);
+  float x10 = mix(n010, n110, w.x);
+  float x01 = mix(n001, n101, w.x);
+  float x11 = mix(n011, n111, w.x);
+  float y0  = mix(x00, x10, w.y);
+  float y1  = mix(x01, x11, w.y);
+  return mix(y0, y1, w.z) * 2.0 - 1.0;
+}
+
+float fbm2(vec2 uv, float t){
+  vec3 p = vec3(uv * uScale, t);
+  float amp = 1.0;
+  float freq = 1.0;
+  float sum = 1.0;
+  for (int i = 0; i < FBM_OCTAVES; ++i){
+    sum  += amp * vnoise(p * freq);
+    freq *= FBM_LACUNARITY;
+    amp  *= FBM_GAIN;
+  }
+  return sum * 0.5 + 0.5;
+}
+
+float maskCircle(vec2 p, float cov){
+  float r = sqrt(cov) * .25;
+  float d = length(p - 0.5) - r;
+  float aa = 0.5 * fwidth(d);
+  return cov * (1.0 - smoothstep(-aa, aa, d * 2.0));
+}
+
+float maskTriangle(vec2 p, vec2 id, float cov){
+  bool flip = mod(id.x + id.y, 2.0) > 0.5;
+  if (flip) p.x = 1.0 - p.x;
+  float r = sqrt(cov);
+  float d  = p.y - r*(1.0 - p.x);
+  float aa = fwidth(d);
+  return cov * clamp(0.5 - d/aa, 0.0, 1.0);
+}
+
+float maskDiamond(vec2 p, float cov){
+  float r = sqrt(cov) * 0.564;
+  return step(abs(p.x - 0.49) + abs(p.y - 0.49), r);
+}
+
+void main(){
+  float pixelSize = uPixelSize;
+  vec2 fragCoord = gl_FragCoord.xy - uResolution * .5;
+  float aspectRatio = uResolution.x / uResolution.y;
+
+  vec2 pixelId = floor(fragCoord / pixelSize);
+  vec2 pixelUV = fract(fragCoord / pixelSize);
+
+  float cellPixelSize = 8.0 * pixelSize;
+  vec2 cellId = floor(fragCoord / cellPixelSize);
+  vec2 cellCoord = cellId * cellPixelSize;
+  vec2 uv = cellCoord / uResolution * vec2(aspectRatio, 1.0);
+
+  float base = fbm2(uv, uTime * 0.05);
+  base = base * 0.5 - 0.65;
+
+  float feed = base + (uDensity - 0.5) * 0.3;
+
+  float speed     = uRippleSpeed;
+  float thickness = uRippleThickness;
+  const float dampT     = 1.0;
+  const float dampR     = 10.0;
+
+  if (uEnableRipples == 1) {
+    for (int i = 0; i < MAX_CLICKS; ++i){
+      vec2 pos = uClickPos[i];
+      if (pos.x < 0.0) continue;
+      float cellPixelSize = 8.0 * pixelSize;
+      vec2 cuv = (((pos - uResolution * .5 - cellPixelSize * .5) / (uResolution))) * vec2(aspectRatio, 1.0);
+      float t = max(uTime - uClickTimes[i], 0.0);
+      float r = distance(uv, cuv);
+      float waveR = speed * t;
+      float ring  = exp(-pow((r - waveR) / thickness, 2.0));
+      float atten = exp(-dampT * t) * exp(-dampR * r);
+      feed = max(feed, ring * atten * uRippleIntensity);
+    }
+  }
+
+  float bayer = Bayer8(fragCoord / uPixelSize) - 0.5;
+  float bw = step(0.5, feed + bayer);
+
+  float h = fract(sin(dot(floor(fragCoord / uPixelSize), vec2(127.1, 311.7))) * 43758.5453);
+  float jitterScale = 1.0 + (h - 0.5) * uPixelJitter;
+  float coverage = bw * jitterScale;
+  float M;
+  if      (uShapeType == SHAPE_CIRCLE)   M = maskCircle (pixelUV, coverage);
+  else if (uShapeType == SHAPE_TRIANGLE) M = maskTriangle(pixelUV, pixelId, coverage);
+  else if (uShapeType == SHAPE_DIAMOND)  M = maskDiamond(pixelUV, coverage);
+  else                                   M = coverage;
+
+  if (uEdgeFade > 0.0) {
+    vec2 norm = gl_FragCoord.xy / uResolution;
+    float edge = min(min(norm.x, norm.y), min(1.0 - norm.x, 1.0 - norm.y));
+    float fade = smoothstep(0.0, uEdgeFade, edge);
+    M *= fade;
+  }
+
+  vec3 color = uColor;
+
+  vec3 srgbColor = mix(
+    color * 12.92,
+    1.055 * pow(color, vec3(1.0 / 2.4)) - 0.055,
+    step(0.0031308, color)
+  );
+
+  fragColor = vec4(srgbColor, M);
+}
+`;
+
+    // ---- config (metallic blue, square pixels, subtle ripples on click) ----
+    const variant = 'square';
+    const color = '#6fa3e0';
+    const pixelSize = 3;
+    const patternScale = 3;
+    const patternDensity = 1.15;
+    const pixelSizeJitter = 0.4;
+    const enableRipples = true;
+    const rippleSpeed = 0.35;
+    const rippleThickness = 0.12;
+    const rippleIntensityScale = 1.3;
+    const edgeFade = 0.3;
+    const speed = 0.4;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setClearAlpha(0);
+    container.appendChild(renderer.domElement);
+
+    const uniforms = {
+      uResolution: { value: new THREE.Vector2(1, 1) },
+      uTime: { value: 0 },
+      uColor: { value: new THREE.Color(color) },
+      uClickPos: { value: Array.from({ length: MAX_CLICKS }, () => new THREE.Vector2(-1, -1)) },
+      uClickTimes: { value: new Float32Array(MAX_CLICKS) },
+      uShapeType: { value: SHAPE_MAP[variant] ?? 0 },
+      uPixelSize: { value: pixelSize * renderer.getPixelRatio() },
+      uScale: { value: patternScale },
+      uDensity: { value: patternDensity },
+      uPixelJitter: { value: pixelSizeJitter },
+      uEnableRipples: { value: enableRipples ? 1 : 0 },
+      uRippleSpeed: { value: rippleSpeed },
+      uRippleThickness: { value: rippleThickness },
+      uRippleIntensity: { value: rippleIntensityScale },
+      uEdgeFade: { value: edgeFade }
+    };
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const material = new THREE.ShaderMaterial({
+      vertexShader: VERTEX_SRC,
+      fragmentShader: FRAGMENT_SRC,
+      uniforms,
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+      glslVersion: THREE.GLSL3
+    });
+    const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+    scene.add(quad);
+
+    function setSize(){
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setSize(w, h, false);
+      uniforms.uResolution.value.set(renderer.domElement.width, renderer.domElement.height);
+      uniforms.uPixelSize.value = pixelSize * renderer.getPixelRatio();
+    }
+    setSize();
+    window.addEventListener('resize', setSize);
+
+    let clickIx = 0;
+    const mapToPixels = e => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      const scaleX = renderer.domElement.width / rect.width;
+      const scaleY = renderer.domElement.height / rect.height;
+      return {
+        fx: (e.clientX - rect.left) * scaleX,
+        fy: (rect.height - (e.clientY - rect.top)) * scaleY
+      };
+    };
+
+    // listen on window (background has pointer-events:none, so page stays clickable)
+    window.addEventListener('pointerdown', e => {
+      const { fx, fy } = mapToPixels(e);
+      uniforms.uClickPos.value[clickIx].set(fx, fy);
+      uniforms.uClickTimes.value[clickIx] = uniforms.uTime.value;
+      clickIx = (clickIx + 1) % MAX_CLICKS;
+    });
+
+    const start = performance.now();
+    function animate(){
+      requestAnimationFrame(animate);
+      uniforms.uTime.value = (performance.now() - start) * 0.001 * speed;
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(animate);
+  } catch (err) {
+    console.warn('PixelBlast background unavailable:', err);
+  }
+})();
+</script>
+
+
 
 </body>
 </html>
