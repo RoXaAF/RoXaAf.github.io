@@ -13,9 +13,9 @@
     --bg-elev: #141418;
     --bg-elev-2: #1c1c21;
     --text: #f2f1ee;
-    --text-muted: #8b8b93;
+    --text-muted: #eaeaea;
     --line: #26262b;
-    --accent: #6fa3e0;
+    --accent: #0a388d;
     --accent-soft: rgba(111,163,224,0.12);
     --accent-dim: rgba(111,163,224,0.35);
     --silver: #c7ccd3;
@@ -184,7 +184,7 @@
     --background-x:50%; --background-y:50%;
     --inner-gradient:linear-gradient(145deg,#0d1b2a 0%,#1a2a4099 60%,#6fa3e022 100%);
     --behind-glow-color:rgba(111,163,224,0.55);
-    --behind-glow-size:50%;
+    --behind-glow-size:20%;
     --icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z'/%3E%3C/svg%3E");
     --sunpillar-1:hsl(200,90%,60%); --sunpillar-2:hsl(220,80%,65%);
     --sunpillar-3:hsl(240,70%,70%); --sunpillar-4:hsl(190,90%,65%);
@@ -247,7 +247,7 @@
     mask-image:var(--icon);
     mask-mode:luminance;
     mask-repeat:repeat;
-    mask-size:80px 80px;
+    mask-size:480px 480px;
     mask-position:calc(var(--background-x) * 0.5) calc(var(--background-y) * 0.5);
     background-image:
       repeating-linear-gradient(0deg,
@@ -272,15 +272,15 @@
     animation:holo-bg 18s linear infinite;
   }
   .pc-card:hover .pc-shine,.pc-card.active .pc-shine{
-    filter:brightness(.85) contrast(1.5) saturate(.6);
+    filter:brightness(.8) contrast(1.5) saturate(.6);
     animation-play-state:paused;
   }
   .pc-shine::before,.pc-shine::after{
     content:''; background-position:center; background-size:cover;
-    grid-area:1/1; opacity:0; transition:opacity .8s ease;
+    grid-area:1/1; opacity:0; transition:opacity .4s ease;
   }
   .pc-card:hover .pc-shine::before,.pc-card.active .pc-shine::before,
-  .pc-card:hover .pc-shine::after,.pc-card.active .pc-shine::after{ opacity:1; }
+  .pc-card:hover .pc-shine::after,.pc-card.active .pc-shine::after{ opacity:0.1; }
   .pc-shine::before{
     background-image:
       linear-gradient(45deg,var(--sunpillar-4),var(--sunpillar-5),var(--sunpillar-6),
@@ -351,15 +351,7 @@
   .pc-handle{ font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500; color:rgba(255,255,255,.9); line-height:1; }
   .pc-status{ font-family:'JetBrains Mono',monospace; font-size:11px; color:rgba(111,163,224,.9); line-height:1; display:flex; align-items:center; gap:5px; }
   .pc-status::before{ content:''; width:5px; height:5px; border-radius:50%; background:#6fa3e0; box-shadow:0 0 0 3px rgba(111,163,224,.2); flex-shrink:0; }
-  .pc-contact-btn{
-    font-family:'JetBrains Mono',monospace;
-    border:1px solid rgba(111,163,224,.4); border-radius:7px;
-    padding:9px 14px; font-size:11px; font-weight:600;
-    color:rgba(255,255,255,.9); cursor:pointer;
-    background:rgba(111,163,224,.12);
-    transition:all .2s ease; backdrop-filter:blur(10px);
-  }
-  .pc-contact-btn:hover{ border-color:rgba(111,163,224,.8); background:rgba(111,163,224,.22); transform:translateY(-1px); }
+
   .pc-content:not(.pc-avatar-content){
     max-height:100%; overflow:hidden; text-align:center; position:relative;
     transform:translate3d(calc(var(--pointer-from-left)*-6px + 3px),
@@ -420,7 +412,7 @@
   }
 
   /* ---------- section shells ---------- */
-  section{ padding:108px 0; border-top:1px solid var(--line); }
+  section{ padding:0px 0; border-top:1px solid var(--line); }
   .section-head{
     display:flex;
     justify-content:space-between;
@@ -777,15 +769,13 @@
             <img class="avatar" src="photo.png" alt="Abderrahim Fakir">
             <div class="pc-user-info">
               <div class="pc-user-details">
-                <div class="pc-mini-avatar">
-                  <img src="photo.png" alt="AF mini">
+                
                 </div>
                 <div class="pc-user-text">
                   <div class="pc-handle">@af.fakir</div>
                   <div class="pc-status">Available</div>
                 </div>
               </div>
-              <a class="pc-contact-btn cursor-target" href="mailto:af.business.manager@gmail.com">Contact</a>
             </div>
           </div>
           <div class="pc-content">
