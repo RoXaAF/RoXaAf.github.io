@@ -182,9 +182,10 @@
     --card-opacity:0;
     --rotate-x:0deg; --rotate-y:0deg;
     --background-x:50%; --background-y:50%;
-    --inner-gradient:linear-gradient(145deg,#1a2a4080 0%,#6fa3e044 100%);
+    --inner-gradient:linear-gradient(145deg,#0d1b2a 0%,#1a2a4099 60%,#6fa3e022 100%);
     --behind-glow-color:rgba(111,163,224,0.55);
     --behind-glow-size:50%;
+    --icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z'/%3E%3C/svg%3E");
     --sunpillar-1:hsl(200,90%,60%); --sunpillar-2:hsl(220,80%,65%);
     --sunpillar-3:hsl(240,70%,70%); --sunpillar-4:hsl(190,90%,65%);
     --sunpillar-5:hsl(210,80%,68%); --sunpillar-6:hsl(230,70%,72%);
@@ -212,9 +213,9 @@
   .pc-card-wrapper:hover,.pc-card-wrapper.active{ --card-opacity:1; }
   .pc-card-shell{ position:relative; z-index:1; }
   .pc-card{
-    height:460px;
+    height:480px;
     display:grid;
-    aspect-ratio:.718;
+    aspect-ratio:0.718;
     border-radius:var(--card-radius);
     position:relative;
     background:rgba(10,10,14,.92);
@@ -243,7 +244,11 @@
     transform:translate3d(0,0,1px);
     overflow:hidden; z-index:3;
     background:transparent;
-    mask-image:none;
+    mask-image:var(--icon);
+    mask-mode:luminance;
+    mask-repeat:repeat;
+    mask-size:80px 80px;
+    mask-position:calc(var(--background-x) * 0.5) calc(var(--background-y) * 0.5);
     background-image:
       repeating-linear-gradient(0deg,
         var(--sunpillar-clr-1) calc(var(--space)*1),
@@ -263,7 +268,7 @@
     background-blend-mode:color,hard-light;
     background-size:500% 500%,300% 300%,200% 200%;
     mix-blend-mode:color-dodge;
-    filter:brightness(.66) contrast(1.33) saturate(.5) opacity(.55);
+    filter:brightness(.8) contrast(1.4) saturate(.7) opacity(.75);
     animation:holo-bg 18s linear infinite;
   }
   .pc-card:hover .pc-shine,.pc-card.active .pc-shine{
@@ -303,21 +308,29 @@
     mix-blend-mode:overlay; filter:brightness(.8) contrast(1.2); z-index:4;
   }
   .pc-avatar-content{
-    mix-blend-mode:luminosity; overflow:visible;
-    transform:translateZ(2px); backface-visibility:hidden;
+    mix-blend-mode:normal;
+    overflow:hidden;
+    transform:translateZ(2px);
+    backface-visibility:hidden;
+    position:absolute;
+    inset:0;
   }
   .pc-avatar-content .avatar{
-    width:90%;
-    position:absolute; left:50%;
-    transform-origin:50% 100%;
-    transform:translateX(calc(-50% + (var(--pointer-from-left) - .5)*6px))
-      translateZ(0) scaleY(calc(1 + (var(--pointer-from-top) - .5)*.02))
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0; left:0;
+    transform:translateX(calc((var(--pointer-from-left) - .5)*6px))
+      translateZ(0)
+      scaleY(calc(1 + (var(--pointer-from-top) - .5)*.02))
       scaleX(calc(1 + (var(--pointer-from-left) - .5)*.01));
-    bottom:-1px; backface-visibility:hidden; will-change:transform;
+    backface-visibility:hidden;
+    will-change:transform;
     transition:transform 120ms ease-out;
-    display:block; border-radius:0;
-    object-fit:contain;
-    object-position:bottom center;
+    display:block;
+    border-radius:0;
+    object-fit:cover;
+    object-position:top center;
   }
   .pc-user-info{
     position:absolute; --ui-inset:16px; --ui-radius-bias:6px;
