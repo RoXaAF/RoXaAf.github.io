@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abderrahim Fakir — Automation &amp; AI Workflow Engineer</title>
+<title>Abderrahim Fakir — UI Design  &amp; AI Workflow Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
     --text: #f2f1ee;
     --text-muted: #eaeaea;
     --line: #26262b;
-    --accent: #0a388d;
+    --accent: #ff2b2bad;
     --accent-soft: rgba(111,163,224,0.12);
     --accent-dim: rgba(111,163,224,0.35);
     --silver: #c7ccd3;
@@ -49,12 +49,12 @@
     position:fixed;
     inset:0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      linear-gradient(rgba(207, 202, 202, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(164, 165, 165, 0.025) 1px, transparent 1px);
     background-size: 64px 64px;
     pointer-events:none;
     z-index:0;
-    mask-image: radial-gradient(circle at 70% 20%, rgba(0,0,0,0.9), transparent 65%);
+    mask-image: radial-gradient(circle at 70% 20%, rgba(43, 83, 43, 0.9), transparent 65%);
   }
 
   /* ---------- nav ---------- */
@@ -804,7 +804,7 @@
       <div class="project-status"><span class="status-dot"></span> deployed</div>
     </div>
     <h3>Automated Data Intelligence Agent</h3>
-    <p>An n8n workflow that automates multi source data collection and real-time probability analysis. It identifies the best opportunities and delivers actionable insights straight to Telegram and Discord turning a manual research routine into a fast, hands-off decision loop.</p>
+    <p>An n8n workflow that automates multi-source data collection and real-time probability analysis. It identifies the best opportunities and delivers actionable insights straight to Telegram and Discord turning a manual research routine into a fast, hands-off decision loop.</p>
     <div class="tag-row">
       <span class="tag">n8n</span>
       <span class="tag">workflow automation</span>
@@ -834,48 +834,19 @@
 </section>
 
 <!-- ============ STACK ============ -->
-<section id="stack" class="wrap">
-  <div class="section-head">
-    <h2>Tools I work with</h2>
-    <div class="section-note">// process — the languages, platforms and AI tooling behind the work above.</div>
-  </div>
-
-  <div class="stack-grid">
-    <div class="stack-item pixel-card magic-card cursor-target">
-      <canvas class="pixel-canvas" id="spx1"></canvas>
-      <div class="pixel-card-inner"><div class="stack-name">Python</div><div class="stack-desc">Scripting, automation &amp; ML applications</div></div>
+<section id="stack">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Tools I work with</h2>
+      <div class="section-note">// process — the languages, platforms and AI tooling behind the work above.</div>
     </div>
-    <div class="stack-item pixel-card magic-card cursor-target">
-      <canvas class="pixel-canvas" id="spx2"></canvas>
-      <div class="pixel-card-inner"><div class="stack-name">C++</div><div class="stack-desc">Core programming &amp; data structures</div></div>
+    <div style="display:flex; justify-content:center; position:relative;">
+      <canvas id="iconCloud" width="520" height="520" style="cursor:grab; display:block;"></canvas>
+      <div id="icTip" style="position:absolute; background:rgba(10,10,14,0.95); border:1px solid rgba(111,163,224,0.4); border-radius:6px; padding:5px 12px; font-family:'JetBrains Mono',monospace; font-size:12px; color:#6fa3e0; pointer-events:none; opacity:0; transition:opacity 0.12s; white-space:nowrap; transform:translate(-50%,-140%);"></div>
     </div>
-    <div class="stack-item pixel-card magic-card cursor-target">
-      <canvas class="pixel-canvas" id="spx3"></canvas>
-      <div class="pixel-card-inner"><div class="stack-name">Git</div><div class="stack-desc">Version control &amp; collaborative workflows</div></div>
-    </div>
-    <div class="stack-item pixel-card magic-card cursor-target">
-      <canvas class="pixel-canvas" id="spx4"></canvas>
-      <div class="pixel-card-inner"><div class="stack-name">Docker</div><div class="stack-desc">Containerized environments &amp; deployment</div></div>
-    </div>
-    <div class="stack-item pixel-card magic-card cursor-target">
-      <canvas class="pixel-canvas" id="spx5"></canvas>
-      <div class="pixel-card-inner"><div class="stack-name">n8n</div><div class="stack-desc">Workflow automation &amp; integrations</div></div>
-    </div>
-    <div class="stack-item pixel-card magic-card cursor-target">
-      <canvas class="pixel-canvas" id="spx6"></canvas>
-      <div class="pixel-card-inner"><div class="stack-name">JSON</div><div class="stack-desc">Data interchange &amp; API workflows</div></div>
-    </div>
-    <div class="stack-item pixel-card magic-card cursor-target">
-      <canvas class="pixel-canvas" id="spx7"></canvas>
-      <div class="pixel-card-inner"><div class="stack-name">AI Agents</div><div class="stack-desc">Claude &amp; Codex for agentic coding</div></div>
-    </div>
-    <div class="stack-item pixel-card magic-card cursor-target">
-      <canvas class="pixel-canvas" id="spx8"></canvas>
-      <div class="pixel-card-inner"><div class="stack-name">Workflows</div><div class="stack-desc">End-to-end pipeline design</div></div>
-    </div>
+    <p style="font-family:'JetBrains Mono',monospace; font-size:12px; color:rgba(255,255,255,0.25); text-align:center; margin-top:12px;">drag to rotate · hover to highlight</p>
   </div>
 </section>
-
 <!-- ============ ABOUT / EDUCATION ============ -->
 <section id="about" class="wrap">
   <div class="section-head">
@@ -1597,6 +1568,134 @@ void main(){
       if(state) animate(state, 'disappear', rafRef);
     });
   });
+})();
+</script>
+
+<!-- ============ STACK ============ -->
+<script>
+(function(){
+  const TOOLS = [
+    { name: 'Git',     color: '#F05032', slug: 'git' },
+    { name: 'React',   color: '#61DAFB', slug: 'react' },
+    { name: 'Python',  color: '#3776AB', slug: 'python' },
+    { name: 'FastAPI', color: '#009688', slug: 'fastapi' },
+    { name: 'C++',     color: '#00599C', slug: 'cplusplus' },
+    { name: 'Java',    color: '#ED8B00', slug: 'openjdk' },
+    { name: 'JSON',    color: '#CBCB41', slug: 'json' },
+    { name: 'GitHub',  color: '#ffffff', slug: 'github' },
+    { name: 'Codex',   color: '#74AA9C', slug: 'openai' },
+    { name: 'n8n',     color: '#EA4B71', slug: 'n8n' },
+    { name: 'Claude',  color: '#D97757', slug: 'anthropic' },
+    { name: 'Docker',  color: '#2496ED', slug: 'docker' },
+    { name: 'AWS',     color: '#FF9900', slug: 'amazonwebservices' },
+  ];
+
+  const canvas = document.getElementById('iconCloud');
+  const ctx = canvas.getContext('2d');
+  const tip = document.getElementById('icTip');
+  const SIZE = 520, R = 168, ICON = 28;
+
+  let rot = { x: 0.3, y: 0 };
+  let drag = false, lastM = { x:0, y:0 };
+  let mpos = { x: SIZE/2, y: SIZE/2 };
+  let hovered = -1;
+  const imgs = TOOLS.map(() => ({ el: null, ok: false }));
+
+  async function loadAll() {
+    await Promise.all(TOOLS.map(async (t, i) => {
+      try {
+        const res = await fetch(`https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${t.slug}.svg`);
+        const raw = await res.text();
+        const colored = raw.replace(/(<svg[^>]*)(>)/, `$1 fill="${t.color}"$2`);
+        const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(colored);
+        const img = new Image();
+        await new Promise(r => { img.onload = r; img.onerror = r; img.src = url; });
+        imgs[i] = { el: img, ok: true };
+      } catch { imgs[i] = { el: null, ok: false }; }
+    }));
+  }
+
+  const pts = TOOLS.map((_, i) => {
+    const n = TOOLS.length, off = 2/n, inc = Math.PI*(3-Math.sqrt(5));
+    const y = i*off - 1 + off/2, r = Math.sqrt(1-y*y), phi = i*inc;
+    return { x: Math.cos(phi)*r*R, y: y*R, z: Math.sin(phi)*r*R };
+  });
+
+  function proj(p) {
+    const cx=Math.cos(rot.x), sx=Math.sin(rot.x), cy=Math.cos(rot.y), sy=Math.sin(rot.y);
+    const rx = p.x*cy - p.z*sy, rz = p.x*sy + p.z*cy, ry = p.y*cx + rz*sx;
+    return { rx, ry, rz };
+  }
+
+  function frame() {
+    ctx.clearRect(0,0,SIZE,SIZE);
+    const H = SIZE/2;
+    const dx = mpos.x-H, dy = mpos.y-H;
+    const spd = 0.002 + Math.sqrt(dx*dx+dy*dy)/(SIZE*0.7)*0.007;
+    if (!drag) { rot.x += dy/SIZE*spd; rot.y += dx/SIZE*spd; }
+
+    const list = pts.map((p,i) => { const r=proj(p); return {...r,i}; }).sort((a,b)=>a.rz-b.rz);
+
+    let newH = -1;
+    list.forEach(({ rx, ry, rz, i }) => {
+      const scale = (rz + R + 80)/(2*R+80);
+      const alpha = Math.max(0.12, (rz + R*0.7)/(R*1.5));
+      const sx = H+rx, sy = H+ry;
+      const s = ICON*scale;
+      const dx2 = mpos.x-sx, dy2 = mpos.y-sy;
+      const hit = Math.sqrt(dx2*dx2+dy2*dy2) < s+4;
+      if (hit) newH = i;
+
+      ctx.save();
+      ctx.globalAlpha = hit ? Math.min(1, alpha*1.6) : alpha;
+      if (hit && imgs[i].ok) {
+        ctx.shadowColor = TOOLS[i].color;
+        ctx.shadowBlur = 16;
+      }
+      if (imgs[i].ok) {
+        ctx.drawImage(imgs[i].el, sx-s, sy-s, s*2, s*2);
+      } else {
+        ctx.fillStyle = TOOLS[i].color;
+        ctx.font = `bold ${Math.round(s*0.7)}px monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(TOOLS[i].name.slice(0,2), sx, sy);
+      }
+      ctx.restore();
+    });
+
+    if (newH !== hovered) {
+      hovered = newH;
+      if (hovered >= 0) {
+        const {rx,ry} = proj(pts[hovered]);
+        tip.textContent = TOOLS[hovered].name;
+        tip.style.left = (H+rx)+'px';
+        tip.style.top  = (H+ry)+'px';
+        tip.style.opacity = '1';
+        canvas.style.cursor = 'pointer';
+      } else {
+        tip.style.opacity = '0';
+        canvas.style.cursor = drag ? 'grabbing' : 'grab';
+      }
+    } else if (hovered >= 0) {
+      const {rx,ry} = proj(pts[hovered]);
+      tip.style.left = (H+rx)+'px';
+      tip.style.top  = (H+ry)+'px';
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mpos = { x: e.clientX-r.left, y: e.clientY-r.top };
+    if (drag) { rot.y += (e.clientX-lastM.x)*0.005; rot.x += (e.clientY-lastM.y)*0.005; lastM = {x:e.clientX,y:e.clientY}; }
+  });
+  canvas.addEventListener('mouseleave', () => { mpos={x:SIZE/2,y:SIZE/2}; drag=false; });
+  canvas.addEventListener('mousedown', e => { drag=true; lastM={x:e.clientX,y:e.clientY}; canvas.style.cursor='grabbing'; });
+  canvas.addEventListener('mouseup', () => { drag=false; canvas.style.cursor=hovered>=0?'pointer':'grab'; });
+
+  loadAll().then(frame);
 })();
 </script>
 
