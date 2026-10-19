@@ -27,7 +27,7 @@
   html{ scroll-behavior:smooth; }
 
   body{
-    background:var(--bg);
+    background:radial-gradient(ellipse at 78% 8%, rgba(39,69,103,.22), transparent 38%), linear-gradient(180deg, #080b10 0%, #0a0a0c 48%, #080a0e 100%);
     color:var(--text);
     font-family:'Space Grotesk', sans-serif;
     line-height:1.6;
@@ -42,19 +42,6 @@
     max-width:var(--maxw);
     margin:0 auto;
     padding:0 32px;
-  }
-
-  /* ---------- background grid texture ---------- */
-  .bg-grid{
-    position:fixed;
-    inset:0;
-    background-image:
-      linear-gradient(rgba(207, 202, 202, 0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(164, 165, 165, 0.025) 1px, transparent 1px);
-    background-size: 64px 64px;
-    pointer-events:none;
-    z-index:0;
-    mask-image: radial-gradient(circle at 70% 20%, rgba(43, 83, 43, 0.9), transparent 65%);
   }
 
   /* ---------- nav ---------- */
@@ -376,41 +363,6 @@
     100%{ background-position:0 var(--background-y),90% 90%,center; }
   }
 
-  /* ---------- PixelCard (React Bits) — project cards & stack items ---------- */
-  .pixel-card{
-    position:relative; overflow:hidden; isolation:isolate;
-    border:1px solid var(--line); border-radius:14px;
-    transition:border-color .2s;
-    user-select:none;
-    background:var(--bg-elev);
-  }
-  .pixel-card::before{
-    content:''; position:absolute; inset:0; margin:auto;
-    aspect-ratio:1;
-    background:radial-gradient(circle, rgba(111,163,224,.08), transparent 85%);
-    opacity:0; transition:opacity 800ms cubic-bezier(.5,1,.89,1);
-    pointer-events:none; z-index:0;
-  }
-  .pixel-card:hover::before{ opacity:1; }
-  .pixel-card:hover{ border-color:var(--accent-dim); }
-  .pixel-canvas{
-    position:absolute; inset:0; width:100%; height:100%;
-    display:block; pointer-events:none; z-index:0;
-  }
-  .pixel-card-inner{ position:relative; z-index:1; }
-  .status-dot-anim{
-    width:7px; height:7px;
-    border-radius:50%;
-    background:var(--accent);
-    box-shadow:0 0 0 4px var(--accent-soft);
-    animation:pulse 2s ease-in-out infinite;
-    flex-shrink:0;
-  }
-  @keyframes pulse{
-    0%, 100%{ opacity:1; }
-    50%{ opacity:0.35; }
-  }
-
   /* ---------- section shells ---------- */
   section{ padding:0px 0; border-top:1px solid var(--line); }
   .section-head{
@@ -699,15 +651,6 @@
   }
 
   /* ---------- React Bits: PixelBlast full-page background ---------- */
-  .bg-pixels{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    opacity:0.55;
-    mix-blend-mode:screen;
-    pointer-events:none;
-  }
-  .bg-pixels canvas{ display:block; width:100%; height:100%; }
   @media (max-width:900px){
     .hero-inner{ grid-template-columns:1fr; }
     .pc-card-wrapper{ max-width:340px; order:-1; }
@@ -758,19 +701,29 @@
   @keyframes reveal-screen{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
   .codex-sticker{
     position:absolute;top:104px;right:clamp(24px,5vw,72px);z-index:4;
-    display:flex;align-items:center;gap:9px;padding:10px 13px;
-    border:1px solid rgba(116,170,156,.5);border-radius:8px;
-    background:rgba(10,15,16,.88);color:#d9fff3;
-    font:12px 'JetBrains Mono',monospace;letter-spacing:.04em;
-    box-shadow:0 0 22px rgba(116,170,156,.12);transform:rotate(3deg);
+    display:grid;place-items:center;width:82px;height:82px;padding:14px;
+    border:1px solid rgba(255,255,255,.15);border-radius:18px;
+    background:linear-gradient(145deg,#f7f8f6,#d9e0e3);
+    box-shadow:0 12px 28px rgba(0,0,0,.35),0 0 26px rgba(116,170,156,.12);
+    transform:rotate(5deg);transition:transform .25s ease,box-shadow .25s ease;
+    overflow:hidden;
   }
-  .codex-sticker .codex-mark{width:9px;height:9px;border-radius:50%;background:#74aa9c;box-shadow:0 0 12px #74aa9c}
+  .codex-sticker::after{
+    content:"";position:absolute;right:0;top:0;width:0;height:0;
+    border-top:0 solid transparent;border-left:0 solid transparent;
+    background:linear-gradient(135deg,#b9c5ca,#fff);
+    box-shadow:-2px 2px 5px rgba(0,0,0,.18);
+    transition:width .25s ease,height .25s ease;
+  }
+  .codex-sticker img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+  .codex-sticker:hover{transform:rotate(0deg) translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.42),0 0 30px rgba(116,170,156,.2)}
+  .codex-sticker:hover::after{width:22px;height:22px;border-top:2px solid rgba(10,10,12,.08);border-left:2px solid rgba(10,10,12,.08)}
   .typing-caret{display:inline-block;width:2px;height:.9em;margin-left:3px;vertical-align:-.05em;background:currentColor;animation:caret-blink .8s steps(2,start) infinite}
   @keyframes caret-blink{to{visibility:hidden}}
   .project-link{font:12px 'JetBrains Mono',monospace;color:var(--accent);border-bottom:1px solid var(--accent-dim);padding-bottom:3px}
   .project-link:hover{color:var(--text)}
   @media(max-width:700px){
-    .codex-sticker{top:92px;right:20px;padding:8px 10px;font-size:10px}
+    .codex-sticker{top:92px;right:20px;width:64px;height:64px;padding:11px}
     .neon-wordmark{letter-spacing:.12em}
   }
   @media(prefers-reduced-motion:reduce){
@@ -783,8 +736,6 @@
 <body class="intro-locked">
 <div class="neon-reveal" id="neonReveal" aria-hidden="true"><div class="neon-tube-wrap"><div class="neon-tube"></div><div class="neon-wordmark">ABDERRAHIM / PORTFOLIO</div><div class="neon-caption">SYSTEM ONLINE · CREATIVITY UNLOCKED</div></div></div>
 
-<div class="bg-grid"></div>
-<div class="bg-pixels" id="bgPixels"></div>
 
 <nav class="nav">
   <div class="nav-inner">
@@ -800,7 +751,7 @@
 
 <!-- ============ HERO ============ -->
 <header class="hero wrap">
-  <a class="codex-sticker" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer" aria-label="OpenAI Codex"><span class="codex-mark"></span> BUILT WITH CODEX</a>
+  <a class="codex-sticker" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer" aria-label="OpenAI Codex"><img src="https://cdn.simpleicons.org/openai/74AA9C" alt="OpenAI Codex" /></a>
   <div class="hero-inner">
     <div>
       <div class="eyebrow">// trigger — abderrahim fakir</div>
@@ -851,9 +802,8 @@
     <div class="section-note">// selected work — AI systems, workflow automation, and open-source tooling.</div>
   </div>
 
-  <div class="project pixel-card magic-card cursor-target">
-    <canvas class="pixel-canvas" id="px1"></canvas>
-    <div class="pixel-card-inner">
+  <div class="project cursor-target">
+        <div class="pixel-card-inner">
       <div class="project-top"><div class="project-status"><span class="status-dot"></span> in development</div></div>
       <h3>CampCare AI — Full-Stack Application</h3>
       <p>Designed a full Software Requirements Specification with screen-by-screen UI specs, database schemas, API contracts, and a 26-week roadmap. Building a FastAPI backend with JWT authentication, a deterministic alert engine, and RAG-based AI guidance with safety guardrails, alongside a Next.js admin dashboard and an offline-first batch-sync algorithm.</p>
@@ -863,9 +813,8 @@
     </div>
   </div>
 
-  <div class="project pixel-card magic-card cursor-target">
-    <canvas class="pixel-canvas" id="px2"></canvas>
-    <div class="pixel-card-inner">
+  <div class="project cursor-target">
+        <div class="pixel-card-inner">
       <div class="project-top"><div class="project-status"><span class="status-dot"></span> prototype</div></div>
       <h3>n8n Sports Tip Automation Service</h3>
       <p>Built an n8n pipeline that collects external API data and automates sports-tip delivery for a MENA audience. Audited expected-value calculations, API-key handling, and payment and regulatory risks, then scoped a subscription-based SaaS version.</p>
@@ -875,9 +824,8 @@
     </div>
   </div>
 
-  <div class="project pixel-card magic-card cursor-target">
-    <canvas class="pixel-canvas" id="px3"></canvas>
-    <div class="pixel-card-inner">
+  <div class="project cursor-target">
+        <div class="pixel-card-inner">
       <div class="project-top"><div class="project-status"><span class="status-dot"></span> open source</div></div>
       <h3>PCP — Prompt Compression Protocol</h3>
       <p>Designed and published a compact shorthand for LLM prompts using intent tags, scope references, session variables, and output directives. Packaged the protocol as a Claude skill and documented cross-model usage in a public README.</p>
@@ -1169,285 +1117,6 @@
 })();
 </script>
 
-<!-- ============ PIXELBLAST BACKGROUND (React Bits, three.js) ============ -->
-<script type="module">
-(async () => {
-  const container = document.getElementById('bgPixels');
-  if (!container) return;
-
-  try {
-    const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
-
-    const SHAPE_MAP = { square: 0, circle: 1, triangle: 2, diamond: 3 };
-    const MAX_CLICKS = 10;
-
-    const VERTEX_SRC = `
-void main() {
-  gl_Position = vec4(position, 1.0);
-}
-`;
-
-    const FRAGMENT_SRC = `
-precision highp float;
-
-uniform vec3  uColor;
-uniform vec2  uResolution;
-uniform float uTime;
-uniform float uPixelSize;
-uniform float uScale;
-uniform float uDensity;
-uniform float uPixelJitter;
-uniform int   uEnableRipples;
-uniform float uRippleSpeed;
-uniform float uRippleThickness;
-uniform float uRippleIntensity;
-uniform float uEdgeFade;
-
-uniform int   uShapeType;
-const int SHAPE_SQUARE   = 0;
-const int SHAPE_CIRCLE   = 1;
-const int SHAPE_TRIANGLE = 2;
-const int SHAPE_DIAMOND  = 3;
-
-const int   MAX_CLICKS = 10;
-
-uniform vec2  uClickPos  [MAX_CLICKS];
-uniform float uClickTimes[MAX_CLICKS];
-
-out vec4 fragColor;
-
-float Bayer2(vec2 a) {
-  a = floor(a);
-  return fract(a.x / 2. + a.y * a.y * .75);
-}
-#define Bayer4(a) (Bayer2(.5*(a))*0.25 + Bayer2(a))
-#define Bayer8(a) (Bayer4(.5*(a))*0.25 + Bayer2(a))
-
-#define FBM_OCTAVES     5
-#define FBM_LACUNARITY  1.25
-#define FBM_GAIN        1.0
-
-float hash11(float n){ return fract(sin(n)*43758.5453); }
-
-float vnoise(vec3 p){
-  vec3 ip = floor(p);
-  vec3 fp = fract(p);
-  float n000 = hash11(dot(ip + vec3(0.0,0.0,0.0), vec3(1.0,57.0,113.0)));
-  float n100 = hash11(dot(ip + vec3(1.0,0.0,0.0), vec3(1.0,57.0,113.0)));
-  float n010 = hash11(dot(ip + vec3(0.0,1.0,0.0), vec3(1.0,57.0,113.0)));
-  float n110 = hash11(dot(ip + vec3(1.0,1.0,0.0), vec3(1.0,57.0,113.0)));
-  float n001 = hash11(dot(ip + vec3(0.0,0.0,1.0), vec3(1.0,57.0,113.0)));
-  float n101 = hash11(dot(ip + vec3(1.0,0.0,1.0), vec3(1.0,57.0,113.0)));
-  float n011 = hash11(dot(ip + vec3(0.0,1.0,1.0), vec3(1.0,57.0,113.0)));
-  float n111 = hash11(dot(ip + vec3(1.0,1.0,1.0), vec3(1.0,57.0,113.0)));
-  vec3 w = fp*fp*fp*(fp*(fp*6.0-15.0)+10.0);
-  float x00 = mix(n000, n100, w.x);
-  float x10 = mix(n010, n110, w.x);
-  float x01 = mix(n001, n101, w.x);
-  float x11 = mix(n011, n111, w.x);
-  float y0  = mix(x00, x10, w.y);
-  float y1  = mix(x01, x11, w.y);
-  return mix(y0, y1, w.z) * 2.0 - 1.0;
-}
-
-float fbm2(vec2 uv, float t){
-  vec3 p = vec3(uv * uScale, t);
-  float amp = 1.0;
-  float freq = 1.0;
-  float sum = 1.0;
-  for (int i = 0; i < FBM_OCTAVES; ++i){
-    sum  += amp * vnoise(p * freq);
-    freq *= FBM_LACUNARITY;
-    amp  *= FBM_GAIN;
-  }
-  return sum * 0.5 + 0.5;
-}
-
-float maskCircle(vec2 p, float cov){
-  float r = sqrt(cov) * .25;
-  float d = length(p - 0.5) - r;
-  float aa = 0.5 * fwidth(d);
-  return cov * (1.0 - smoothstep(-aa, aa, d * 2.0));
-}
-
-float maskTriangle(vec2 p, vec2 id, float cov){
-  bool flip = mod(id.x + id.y, 2.0) > 0.5;
-  if (flip) p.x = 1.0 - p.x;
-  float r = sqrt(cov);
-  float d  = p.y - r*(1.0 - p.x);
-  float aa = fwidth(d);
-  return cov * clamp(0.5 - d/aa, 0.0, 1.0);
-}
-
-float maskDiamond(vec2 p, float cov){
-  float r = sqrt(cov) * 0.564;
-  return step(abs(p.x - 0.49) + abs(p.y - 0.49), r);
-}
-
-void main(){
-  float pixelSize = uPixelSize;
-  vec2 fragCoord = gl_FragCoord.xy - uResolution * .5;
-  float aspectRatio = uResolution.x / uResolution.y;
-
-  vec2 pixelId = floor(fragCoord / pixelSize);
-  vec2 pixelUV = fract(fragCoord / pixelSize);
-
-  float cellPixelSize = 8.0 * pixelSize;
-  vec2 cellId = floor(fragCoord / cellPixelSize);
-  vec2 cellCoord = cellId * cellPixelSize;
-  vec2 uv = cellCoord / uResolution * vec2(aspectRatio, 1.0);
-
-  float base = fbm2(uv, uTime * 0.05);
-  base = base * 0.5 - 0.65;
-
-  float feed = base + (uDensity - 0.5) * 0.3;
-
-  float speed     = uRippleSpeed;
-  float thickness = uRippleThickness;
-  const float dampT     = 1.0;
-  const float dampR     = 10.0;
-
-  if (uEnableRipples == 1) {
-    for (int i = 0; i < MAX_CLICKS; ++i){
-      vec2 pos = uClickPos[i];
-      if (pos.x < 0.0) continue;
-      float cellPixelSize = 8.0 * pixelSize;
-      vec2 cuv = (((pos - uResolution * .5 - cellPixelSize * .5) / (uResolution))) * vec2(aspectRatio, 1.0);
-      float t = max(uTime - uClickTimes[i], 0.0);
-      float r = distance(uv, cuv);
-      float waveR = speed * t;
-      float ring  = exp(-pow((r - waveR) / thickness, 2.0));
-      float atten = exp(-dampT * t) * exp(-dampR * r);
-      feed = max(feed, ring * atten * uRippleIntensity);
-    }
-  }
-
-  float bayer = Bayer8(fragCoord / uPixelSize) - 0.5;
-  float bw = step(0.5, feed + bayer);
-
-  float h = fract(sin(dot(floor(fragCoord / uPixelSize), vec2(127.1, 311.7))) * 43758.5453);
-  float jitterScale = 1.0 + (h - 0.5) * uPixelJitter;
-  float coverage = bw * jitterScale;
-  float M;
-  if      (uShapeType == SHAPE_CIRCLE)   M = maskCircle (pixelUV, coverage);
-  else if (uShapeType == SHAPE_TRIANGLE) M = maskTriangle(pixelUV, pixelId, coverage);
-  else if (uShapeType == SHAPE_DIAMOND)  M = maskDiamond(pixelUV, coverage);
-  else                                   M = coverage;
-
-  if (uEdgeFade > 0.0) {
-    vec2 norm = gl_FragCoord.xy / uResolution;
-    float edge = min(min(norm.x, norm.y), min(1.0 - norm.x, 1.0 - norm.y));
-    float fade = smoothstep(0.0, uEdgeFade, edge);
-    M *= fade;
-  }
-
-  vec3 color = uColor;
-
-  vec3 srgbColor = mix(
-    color * 12.92,
-    1.055 * pow(color, vec3(1.0 / 2.4)) - 0.055,
-    step(0.0031308, color)
-  );
-
-  fragColor = vec4(srgbColor, M);
-}
-`;
-
-    // ---- config (metallic blue, square pixels, subtle ripples on click) ----
-    const variant = 'square';
-    const color = '#6fa3e0';
-    const pixelSize = 3;
-    const patternScale = 3;
-    const patternDensity = 1.15;
-    const pixelSizeJitter = 0.4;
-    const enableRipples = true;
-    const rippleSpeed = 0.35;
-    const rippleThickness = 0.12;
-    const rippleIntensityScale = 1.3;
-    const edgeFade = 0.3;
-    const speed = 0.4;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setClearAlpha(0);
-    container.appendChild(renderer.domElement);
-
-    const uniforms = {
-      uResolution: { value: new THREE.Vector2(1, 1) },
-      uTime: { value: 0 },
-      uColor: { value: new THREE.Color(color) },
-      uClickPos: { value: Array.from({ length: MAX_CLICKS }, () => new THREE.Vector2(-1, -1)) },
-      uClickTimes: { value: new Float32Array(MAX_CLICKS) },
-      uShapeType: { value: SHAPE_MAP[variant] ?? 0 },
-      uPixelSize: { value: pixelSize * renderer.getPixelRatio() },
-      uScale: { value: patternScale },
-      uDensity: { value: patternDensity },
-      uPixelJitter: { value: pixelSizeJitter },
-      uEnableRipples: { value: enableRipples ? 1 : 0 },
-      uRippleSpeed: { value: rippleSpeed },
-      uRippleThickness: { value: rippleThickness },
-      uRippleIntensity: { value: rippleIntensityScale },
-      uEdgeFade: { value: edgeFade }
-    };
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const material = new THREE.ShaderMaterial({
-      vertexShader: VERTEX_SRC,
-      fragmentShader: FRAGMENT_SRC,
-      uniforms,
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-      glslVersion: THREE.GLSL3
-    });
-    const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
-    scene.add(quad);
-
-    function setSize(){
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      renderer.setSize(w, h, false);
-      uniforms.uResolution.value.set(renderer.domElement.width, renderer.domElement.height);
-      uniforms.uPixelSize.value = pixelSize * renderer.getPixelRatio();
-    }
-    setSize();
-    window.addEventListener('resize', setSize);
-
-    let clickIx = 0;
-    const mapToPixels = e => {
-      const rect = renderer.domElement.getBoundingClientRect();
-      const scaleX = renderer.domElement.width / rect.width;
-      const scaleY = renderer.domElement.height / rect.height;
-      return {
-        fx: (e.clientX - rect.left) * scaleX,
-        fy: (rect.height - (e.clientY - rect.top)) * scaleY
-      };
-    };
-
-    // listen on window (background has pointer-events:none, so page stays clickable)
-    window.addEventListener('pointerdown', e => {
-      const { fx, fy } = mapToPixels(e);
-      uniforms.uClickPos.value[clickIx].set(fx, fy);
-      uniforms.uClickTimes.value[clickIx] = uniforms.uTime.value;
-      clickIx = (clickIx + 1) % MAX_CLICKS;
-    });
-
-    const start = performance.now();
-    function animate(){
-      requestAnimationFrame(animate);
-      uniforms.uTime.value = (performance.now() - start) * 0.001 * speed;
-      renderer.render(scene, camera);
-    }
-    requestAnimationFrame(animate);
-  } catch (err) {
-    console.warn('PixelBlast background unavailable:', err);
-  }
-})();
-</script>
-
 <!-- ============ PROFILE CARD TILT (React Bits, vanilla JS) ============ -->
 <script>
 (function(){
@@ -1525,105 +1194,6 @@ void main(){
   targetX = (shell.clientWidth||300)/2; targetY = (shell.clientHeight||460)/2;
   initialUntil = performance.now() + 1200;
   start();
-})();
-</script>
-
-<!-- ============ PIXEL CARD CANVAS ANIMATION (React Bits, vanilla JS) ============ -->
-<script>
-(function(){
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  class Pixel {
-    constructor(canvas, ctx, x, y, color, speed, delay){
-      this.width=canvas.width; this.height=canvas.height; this.ctx=ctx;
-      this.x=x; this.y=y; this.color=color;
-      this.speed=(Math.random()*.8+.1)*speed;
-      this.size=0; this.sizeStep=Math.random()*.4;
-      this.minSize=.5; this.maxSizeInt=2;
-      this.maxSize=Math.random()*(this.maxSizeInt-this.minSize)+this.minSize;
-      this.delay=delay; this.counter=0;
-      this.counterStep=Math.random()*4+(this.width+this.height)*.01;
-      this.isIdle=false; this.isReverse=false; this.isShimmer=false;
-    }
-    draw(){
-      const o=this.maxSizeInt*.5-this.size*.5;
-      this.ctx.fillStyle=this.color;
-      this.ctx.fillRect(this.x+o,this.y+o,this.size,this.size);
-    }
-    shimmer(){
-      if(this.size>=this.maxSize) this.isReverse=true;
-      else if(this.size<=this.minSize) this.isReverse=false;
-      this.isReverse ? this.size-=this.speed : this.size+=this.speed;
-    }
-    appear(){
-      this.isIdle=false;
-      if(this.counter<=this.delay){ this.counter+=this.counterStep; return; }
-      if(this.size>=this.maxSize) this.isShimmer=true;
-      this.isShimmer ? this.shimmer() : this.size+=this.sizeStep;
-      this.draw();
-    }
-    disappear(){
-      this.isShimmer=false; this.counter=0;
-      if(this.size<=0){ this.isIdle=true; return; }
-      this.size-=.1; this.draw();
-    }
-  }
-
-  const COLORS = '#6fa3e0,#c7ccd3,#a0b8d8';
-  const GAP = 6, SPEED = .025;
-
-  function initCard(container, canvas){
-    const rect = container.getBoundingClientRect();
-    const w = Math.floor(rect.width), h = Math.floor(rect.height);
-    canvas.width=w; canvas.height=h;
-    canvas.style.width=w+'px'; canvas.style.height=h+'px';
-    const ctx = canvas.getContext('2d');
-    const cols = COLORS.split(',');
-    const pixels = [];
-    for(let x=0;x<w;x+=GAP){
-      for(let y=0;y<h;y+=GAP){
-        const color = cols[Math.floor(Math.random()*cols.length)];
-        const dx=x-w/2, dy=y-h/2;
-        const delay = reducedMotion ? 0 : Math.sqrt(dx*dx+dy*dy);
-        pixels.push(new Pixel(canvas,ctx,x,y,color,SPEED,delay));
-      }
-    }
-    return { ctx, pixels, w, h };
-  }
-
-  function animate(state, fnName, rafRef){
-    if(rafRef.id) cancelAnimationFrame(rafRef.id);
-    const run = () => {
-      if(!state.ctx || !state.canvas) return;
-      state.ctx.clearRect(0,0,state.w,state.h);
-      let allIdle=true;
-      for(const p of state.pixels){ p[fnName](); if(!p.isIdle) allIdle=false; }
-      if(!allIdle) rafRef.id = requestAnimationFrame(run);
-    };
-    rafRef.id = requestAnimationFrame(run);
-  }
-
-  document.querySelectorAll('.pixel-card').forEach(card => {
-    const canvas = card.querySelector('.pixel-canvas');
-    if(!canvas) return;
-    let state = null;
-    const rafRef = {id:null};
-
-    const ro = new ResizeObserver(() => {
-      state = initCard(card, canvas);
-      state.canvas = canvas;
-    });
-    ro.observe(card);
-    state = initCard(card, canvas);
-    state.canvas = canvas;
-
-    card.addEventListener('mouseenter', () => {
-      if(state) animate(state, 'appear', rafRef);
-    });
-    card.addEventListener('mouseleave', () => {
-      if(state) animate(state, 'disappear', rafRef);
-    });
-  });
 })();
 </script>
 
