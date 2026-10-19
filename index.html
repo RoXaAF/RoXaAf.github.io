@@ -726,9 +726,62 @@
     .edu-stats{ gap:18px; }
     .contact h2{ font-size:32px; }
   }
+
+  /* ---------- neon tube intro reveal ---------- */
+  body.intro-locked{overflow:hidden}
+  .neon-reveal{
+    position:fixed; inset:0; z-index:1000; display:grid; place-items:center;
+    background:#050608; overflow:hidden; isolation:isolate;
+    animation:reveal-screen 1s ease 1.65s forwards;
+  }
+  .neon-reveal::before{
+    content:""; position:absolute; inset:-20%;
+    background:radial-gradient(ellipse at center,rgba(111,163,224,.13),transparent 48%);
+    opacity:0; animation:neon-ambient .8s ease .35s forwards;
+  }
+  .neon-tube-wrap{position:relative; width:min(78vw,620px); text-align:center; transform:translateY(10px); animation:tube-lift .7s ease 1.2s forwards}
+  .neon-tube{
+    height:3px; width:0; margin:0 auto 24px; border-radius:999px;
+    background:#dff7ff; box-shadow:0 0 5px #fff,0 0 14px #6fa3e0,0 0 32px #6fa3e0,0 0 70px rgba(111,163,224,.65);
+    animation:tube-light .65s cubic-bezier(.2,.8,.2,1) .45s forwards;
+  }
+  .neon-wordmark{
+    font:600 clamp(20px,4vw,38px)/1.2 'JetBrains Mono',monospace;
+    letter-spacing:.2em; color:#eaf7ff; text-shadow:0 0 6px #fff,0 0 18px #6fa3e0,0 0 42px rgba(111,163,224,.8);
+    opacity:0; animation:wordmark-on .5s ease .72s forwards;
+  }
+  .neon-caption{margin-top:14px;font:11px 'JetBrains Mono',monospace;letter-spacing:.22em;color:rgba(220,235,255,.55);opacity:0;animation:wordmark-on .4s ease 1s forwards}
+  @keyframes tube-light{to{width:100%}}
+  @keyframes wordmark-on{to{opacity:1}}
+  @keyframes neon-ambient{to{opacity:1}}
+  @keyframes tube-lift{to{transform:translateY(-14px)}}
+  @keyframes reveal-screen{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+  .codex-sticker{
+    position:absolute;top:104px;right:clamp(24px,5vw,72px);z-index:4;
+    display:flex;align-items:center;gap:9px;padding:10px 13px;
+    border:1px solid rgba(116,170,156,.5);border-radius:8px;
+    background:rgba(10,15,16,.88);color:#d9fff3;
+    font:12px 'JetBrains Mono',monospace;letter-spacing:.04em;
+    box-shadow:0 0 22px rgba(116,170,156,.12);transform:rotate(3deg);
+  }
+  .codex-sticker .codex-mark{width:9px;height:9px;border-radius:50%;background:#74aa9c;box-shadow:0 0 12px #74aa9c}
+  .typing-caret{display:inline-block;width:2px;height:.9em;margin-left:3px;vertical-align:-.05em;background:currentColor;animation:caret-blink .8s steps(2,start) infinite}
+  @keyframes caret-blink{to{visibility:hidden}}
+  .project-link{font:12px 'JetBrains Mono',monospace;color:var(--accent);border-bottom:1px solid var(--accent-dim);padding-bottom:3px}
+  .project-link:hover{color:var(--text)}
+  @media(max-width:700px){
+    .codex-sticker{top:92px;right:20px;padding:8px 10px;font-size:10px}
+    .neon-wordmark{letter-spacing:.12em}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .neon-reveal,.neon-reveal::before,.neon-tube,.neon-wordmark,.neon-caption,.neon-tube-wrap{animation-duration:.01ms!important;animation-delay:0ms!important}
+    .typing-caret{animation:none}
+  }
+
 </style>
 </head>
-<body>
+<body class="intro-locked">
+<div class="neon-reveal" id="neonReveal" aria-hidden="true"><div class="neon-tube-wrap"><div class="neon-tube"></div><div class="neon-wordmark">ABDERRAHIM / PORTFOLIO</div><div class="neon-caption">SYSTEM ONLINE · CREATIVITY UNLOCKED</div></div></div>
 
 <div class="bg-grid"></div>
 <div class="bg-pixels" id="bgPixels"></div>
@@ -747,10 +800,11 @@
 
 <!-- ============ HERO ============ -->
 <header class="hero wrap">
+  <a class="codex-sticker" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer" aria-label="OpenAI Codex"><span class="codex-mark"></span> BUILT WITH CODEX</a>
   <div class="hero-inner">
     <div>
       <div class="eyebrow">// trigger — abderrahim fakir</div>
-      <h1>Building <span class="accent">AI agents</span> and automation workflows that ship.</h1>
+      <h1>Building <span class="accent"><span id="typedWord">AI agents</span><span class="typing-caret" aria-hidden="true"></span></span> that ship.</h1>
       <p>Computer Science student at NJUPT focused on practical automation n8n pipelines, Python tooling, and AI-agent workflows that turn raw data into decisions, with Git, Docker and clean code underneath.</p>
       <div class="btn-row">
         <a class="btn btn-primary cursor-target" href="#contact">Contact me</a>
@@ -793,42 +847,44 @@
 <!-- ============ WORK ============ -->
 <section id="work" class="wrap">
   <div class="section-head">
-    <h2>Things I've automated</h2>
-    <div class="section-note">// process — selected projects where data goes in, decisions and insight come out.</div>
+    <h2>Selected projects</h2>
+    <div class="section-note">// selected work — AI systems, workflow automation, and open-source tooling.</div>
   </div>
 
   <div class="project pixel-card magic-card cursor-target">
     <canvas class="pixel-canvas" id="px1"></canvas>
     <div class="pixel-card-inner">
-    <div class="project-top">
-      <div class="project-status"><span class="status-dot"></span> deployed</div>
-    </div>
-    <h3>Automated Data Intelligence Agent</h3>
-    <p>An n8n workflow that automates multi-source data collection and real-time probability analysis. It identifies the best opportunities and delivers actionable insights straight to Telegram and Discord turning a manual research routine into a fast, hands-off decision loop.</p>
-    <div class="tag-row">
-      <span class="tag">n8n</span>
-      <span class="tag">workflow automation</span>
-      <span class="tag">telegram api</span>
-      <span class="tag">discord api</span>
-      <span class="tag">real-time data</span>
-    </div>
+      <div class="project-top"><div class="project-status"><span class="status-dot"></span> in development</div></div>
+      <h3>CampCare AI — Full-Stack Application</h3>
+      <p>Designed a full Software Requirements Specification with screen-by-screen UI specs, database schemas, API contracts, and a 26-week roadmap. Building a FastAPI backend with JWT authentication, a deterministic alert engine, and RAG-based AI guidance with safety guardrails, alongside a Next.js admin dashboard and an offline-first batch-sync algorithm.</p>
+      <div class="tag-row">
+        <span class="tag">FastAPI</span><span class="tag">Next.js</span><span class="tag">Flutter</span><span class="tag">JWT</span><span class="tag">RAG</span><span class="tag">Offline-first sync</span>
+      </div>
     </div>
   </div>
 
   <div class="project pixel-card magic-card cursor-target">
     <canvas class="pixel-canvas" id="px2"></canvas>
     <div class="pixel-card-inner">
-    <div class="project-top">
-      <div class="project-status"><span class="status-dot"></span> shipped</div>
+      <div class="project-top"><div class="project-status"><span class="status-dot"></span> prototype</div></div>
+      <h3>n8n Sports Tip Automation Service</h3>
+      <p>Built an n8n pipeline that collects external API data and automates sports-tip delivery for a MENA audience. Audited expected-value calculations, API-key handling, and payment and regulatory risks, then scoped a subscription-based SaaS version.</p>
+      <div class="tag-row">
+        <span class="tag">n8n</span><span class="tag">External APIs</span><span class="tag">Webhooks</span><span class="tag">Expected value</span><span class="tag">SaaS</span>
+      </div>
     </div>
-    <h3>Predictive Academic Analytics Engine</h3>
-    <p>A Python machine learning application that automates scholarship evaluation using historical academic data. It predicts student performance with strong accuracy, converting raw records into insights usable for academic planning and resource allocation.</p>
-    <div class="tag-row">
-      <span class="tag">python</span>
-      <span class="tag">machine learning</span>
-      <span class="tag">data analysis</span>
-      <span class="tag">predictive modeling</span>
-    </div>
+  </div>
+
+  <div class="project pixel-card magic-card cursor-target">
+    <canvas class="pixel-canvas" id="px3"></canvas>
+    <div class="pixel-card-inner">
+      <div class="project-top"><div class="project-status"><span class="status-dot"></span> open source</div></div>
+      <h3>PCP — Prompt Compression Protocol</h3>
+      <p>Designed and published a compact shorthand for LLM prompts using intent tags, scope references, session variables, and output directives. Packaged the protocol as a Claude skill and documented cross-model usage in a public README.</p>
+      <div class="tag-row">
+        <span class="tag">Open source</span><span class="tag">LLMs</span><span class="tag">Prompt engineering</span><span class="tag">Claude Skill</span><span class="tag">GitHub</span>
+      </div>
+      <p style="margin-top:14px;margin-bottom:0;"><a href="https://github.com/RoXaAF" target="_blank" rel="noopener noreferrer" class="project-link">Explore on GitHub ↗</a></p>
     </div>
   </div>
 </section>
@@ -1700,5 +1756,40 @@ void main(){
 </script>
 
 -e 
+
+<script>
+(function(){
+  const el = document.getElementById('typedWord');
+  if (!el) return;
+  const words = ['AI agents','automation','intelligent systems','AI workflows'];
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { el.textContent = words[0]; return; }
+  let wordIndex = 0, charIndex = words[0].length, deleting = true;
+  function tick(){
+    const word = words[wordIndex];
+    if (deleting) {
+      charIndex--;
+      el.textContent = word.slice(0, Math.max(0,charIndex));
+      if (charIndex <= 0) { deleting = false; wordIndex = (wordIndex + 1) % words.length; }
+      setTimeout(tick, 55);
+    } else {
+      const next = words[wordIndex];
+      charIndex++;
+      el.textContent = next.slice(0,charIndex);
+      if (charIndex >= next.length) { deleting = true; setTimeout(tick, 1500); }
+      else setTimeout(tick, 85);
+    }
+  }
+  setTimeout(tick, 1800);
+})();
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.body.classList.remove('intro-locked');
+    const overlay = document.getElementById('neonReveal');
+    if (overlay) setTimeout(() => overlay.remove(), 2800);
+  }, 1900);
+});
+</script>
+
 </body>
 </html>
