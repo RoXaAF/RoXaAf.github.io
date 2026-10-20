@@ -34,6 +34,28 @@
     -webkit-font-smoothing:antialiased;
   }
 
+  /* Animated voxel horizon */
+  #voxelArcCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.82;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 78%,transparent 100%)}
+  body>*:not(#voxelArcCanvas){position:relative;z-index:1}
+  .target-cursor-wrapper{position:fixed;top:0;left:0;width:0;height:0;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);mix-blend-mode:screen}
+  .target-cursor-ring{position:absolute;left:0;top:0;width:34px;height:34px;border:1.5px solid rgba(229,240,255,.9);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 18px rgba(111,163,224,.12);will-change:width,height,border-radius,transform}
+  .target-cursor-dot{position:absolute;left:0;top:0;width:4px;height:4px;background:#fff;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(255,255,255,.8)}
+  .phone-scene{perspective:1600px;max-width:1000px;margin:24px auto 54px;padding:22px 18px 38px;position:relative;isolation:isolate}
+  .phone-scene:before{content:"";position:absolute;inset:5% 8% 0;background:radial-gradient(ellipse at 50% 4%,rgba(118,160,210,.24),transparent 48%),radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.85),transparent 58%);filter:blur(22px);z-index:-1;pointer-events:none}
+  .phone-device{position:relative;padding:18px;border-radius:42px;border:1px solid rgba(206,224,245,.42);background:linear-gradient(125deg,#65717e 0%,#141a22 7%,#080b10 19%,#151b24 50%,#06080c 86%,#667381 100%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.035),inset 0 0 24px rgba(255,255,255,.035),0 34px 80px rgba(0,0,0,.6),0 0 55px rgba(93,137,194,.1);transform:rotateX(2deg) rotateY(-2deg);transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+  .phone-device:before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:82px;height:7px;border-radius:99px;background:#020305;box-shadow:inset 0 1px 2px rgba(255,255,255,.13);z-index:3}
+  .phone-device:after{content:"";position:absolute;top:10px;left:calc(50% + 49px);width:5px;height:5px;border-radius:50%;background:#111c2b;box-shadow:0 0 0 1px rgba(140,180,225,.12);z-index:3}
+  .phone-screen{overflow:hidden;border-radius:27px;border:1px solid rgba(210,226,245,.14);padding:27px 22px 10px;background:radial-gradient(ellipse at 50% 0%,rgba(66,95,132,.14),transparent 44%),linear-gradient(180deg,rgba(8,12,18,.97),rgba(5,7,11,.99));box-shadow:inset 0 0 30px rgba(0,0,0,.65)}
+  .phone-screen-label{font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:10px;color:rgba(190,211,236,.55);margin:0 0 18px 5px;display:flex;align-items:center;gap:9px}
+  .phone-screen-label:before{content:"";width:6px;height:6px;border-radius:50%;background:#8db8eb;box-shadow:0 0 12px #6fa3e0}
+  .phone-screen .project{margin-bottom:14px;padding:23px;border-radius:16px;background:linear-gradient(145deg,rgba(25,33,44,.95),rgba(11,15,22,.98));border-color:rgba(174,199,229,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 12px 25px rgba(0,0,0,.18);transition:transform .28s,border-color .28s,background .28s}
+  .phone-screen .project:hover{transform:translateY(-3px);border-color:rgba(111,163,224,.5);background:linear-gradient(145deg,rgba(29,41,57,.98),rgba(11,15,22,.98))}
+  .phone-screen .project h3{font-size:clamp(17px,2vw,21px)}
+  .phone-screen .project p{font-size:14px;line-height:1.7}
+  .phone-device-button{position:absolute;right:-4px;top:125px;width:4px;height:72px;border-radius:0 4px 4px 0;background:linear-gradient(90deg,#333e4b,#8995a2,#202832);box-shadow:1px 0 2px #000}
+  @media(max-width:700px){.phone-scene{padding:12px 0 28px;margin:12px auto 38px}.phone-device{padding:12px;border-radius:30px;transform:none}.phone-screen{padding:24px 10px 6px;border-radius:20px}.phone-screen .project{padding:18px 15px}.phone-device-button{display:none}}
+  @media(prefers-reduced-motion:reduce){#voxelArcCanvas{opacity:.38}.phone-device,.phone-screen .project{transition:none}}
+
   .mono{ font-family:'JetBrains Mono', monospace; }
 
   a{ color:inherit; text-decoration:none; }
@@ -734,6 +756,7 @@
 </style>
 </head>
 <body class="intro-locked">
+<canvas id="voxelArcCanvas" aria-hidden="true"></canvas>
 <div class="neon-reveal" id="neonReveal" aria-hidden="true"><div class="neon-tube-wrap"><div class="neon-tube"></div><div class="neon-wordmark">ABDERRAHIM / PORTFOLIO</div><div class="neon-caption">SYSTEM ONLINE · CREATIVITY UNLOCKED</div></div></div>
 
 
@@ -802,37 +825,38 @@
     <div class="section-note">// selected work — AI systems, workflow automation, and open-source tooling.</div>
   </div>
 
+
+  <div class="phone-scene cursor-target">
+    <div class="phone-device"><span class="phone-device-button" aria-hidden="true"></span>
+      <div class="phone-screen"><div class="phone-screen-label">Selected work · portfolio preview</div>
   <div class="project cursor-target">
-        <div class="pixel-card-inner">
-      <div class="project-top"><div class="project-status"><span class="status-dot"></span> in development</div></div>
+<div class="project-top"><div class="project-status"><span class="status-dot"></span> in development</div></div>
       <h3>CampCare AI — Full-Stack Application</h3>
       <p>Designed a full Software Requirements Specification with screen-by-screen UI specs, database schemas, API contracts, and a 26-week roadmap. Building a FastAPI backend with JWT authentication, a deterministic alert engine, and RAG-based AI guidance with safety guardrails, alongside a Next.js admin dashboard and an offline-first batch-sync algorithm.</p>
       <div class="tag-row">
         <span class="tag">FastAPI</span><span class="tag">Next.js</span><span class="tag">Flutter</span><span class="tag">JWT</span><span class="tag">RAG</span><span class="tag">Offline-first sync</span>
       </div>
     </div>
-  </div>
 
   <div class="project cursor-target">
-        <div class="pixel-card-inner">
-      <div class="project-top"><div class="project-status"><span class="status-dot"></span> prototype</div></div>
+<div class="project-top"><div class="project-status"><span class="status-dot"></span> prototype</div></div>
       <h3>n8n Sports Tip Automation Service</h3>
       <p>Built an n8n pipeline that collects external API data and automates sports-tip delivery for a MENA audience. Audited expected-value calculations, API-key handling, and payment and regulatory risks, then scoped a subscription-based SaaS version.</p>
       <div class="tag-row">
         <span class="tag">n8n</span><span class="tag">External APIs</span><span class="tag">Webhooks</span><span class="tag">Expected value</span><span class="tag">SaaS</span>
       </div>
     </div>
-  </div>
 
   <div class="project cursor-target">
-        <div class="pixel-card-inner">
-      <div class="project-top"><div class="project-status"><span class="status-dot"></span> open source</div></div>
+<div class="project-top"><div class="project-status"><span class="status-dot"></span> open source</div></div>
       <h3>PCP — Prompt Compression Protocol</h3>
       <p>Designed and published a compact shorthand for LLM prompts using intent tags, scope references, session variables, and output directives. Packaged the protocol as a Claude skill and documented cross-model usage in a public README.</p>
       <div class="tag-row">
         <span class="tag">Open source</span><span class="tag">LLMs</span><span class="tag">Prompt engineering</span><span class="tag">Claude Skill</span><span class="tag">GitHub</span>
       </div>
       <p style="margin-top:14px;margin-bottom:0;"><a href="https://github.com/RoXaAF" target="_blank" rel="noopener noreferrer" class="project-link">Explore on GitHub ↗</a></p>
+    </div>
+      </div>
     </div>
   </div>
 </section>
@@ -905,121 +929,26 @@
 </footer>
 
 <!-- ============ TARGET CURSOR (React Bits, ported to vanilla JS) ============ -->
-<div class="target-cursor-wrapper" id="targetCursor">
-  <div class="target-cursor-dot"></div>
-  <div class="target-cursor-corner corner-tl"></div>
-  <div class="target-cursor-corner corner-tr"></div>
-  <div class="target-cursor-corner corner-br"></div>
-  <div class="target-cursor-corner corner-bl"></div>
-</div>
+<div class="target-cursor-wrapper" id="targetCursor" aria-hidden="true"><div class="target-cursor-ring"></div><div class="target-cursor-dot"></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (function(){
-  // ---------- Target Cursor ----------
-  const hasTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-  const isSmallScreen = window.innerWidth <= 768;
-  const cursor = document.getElementById('targetCursor');
-
-  if (typeof gsap === 'undefined' || !cursor) return;
-
-  if (hasTouch && isSmallScreen) {
-    cursor.remove();
-  } else {
-    document.body.style.cursor = 'none';
-    const corners = cursor.querySelectorAll('.target-cursor-corner');
-    const dot = cursor.querySelector('.target-cursor-dot');
-    const spinDuration = 2.6;
-    const cornerSize = 12;
-    const border = 3;
-    let spinTl = null;
-    let activeTarget = null;
-    let resumeTimeout = null;
-
-    const resetPositions = [
-      { x: -cornerSize * 1.5, y: -cornerSize * 1.5 },
-      { x: cornerSize * 0.5, y: -cornerSize * 1.5 },
-      { x: cornerSize * 0.5, y: cornerSize * 0.5 },
-      { x: -cornerSize * 1.5, y: cornerSize * 0.5 }
-    ];
-
-    gsap.set(cursor, {
-      xPercent: -50,
-      yPercent: -50,
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2
-    });
-
-    function createSpin(){
-      if (spinTl) spinTl.kill();
-      spinTl = gsap.timeline({ repeat: -1 }).to(cursor, { rotation: '+=360', duration: spinDuration, ease: 'none' });
-    }
-    createSpin();
-
-    function cornerPositions(target){
-      const rect = target.getBoundingClientRect();
-      const cursorX = gsap.getProperty(cursor, 'x');
-      const cursorY = gsap.getProperty(cursor, 'y');
-      return [
-        { x: rect.left - border - cursorX, y: rect.top - border - cursorY },
-        { x: rect.right + border - cornerSize - cursorX, y: rect.top - border - cursorY },
-        { x: rect.right + border - cornerSize - cursorX, y: rect.bottom + border - cornerSize - cursorY },
-        { x: rect.left - border - cursorX, y: rect.bottom + border - cornerSize - cursorY }
-      ];
-    }
-
-    window.addEventListener('mousemove', e => {
-      gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'power3.out' });
-    });
-
-    window.addEventListener('mousedown', () => {
-      gsap.to(dot, { scale: 0.7, duration: 0.3 });
-      gsap.to(cursor, { scale: 0.9, duration: 0.2 });
-    });
-    window.addEventListener('mouseup', () => {
-      gsap.to(dot, { scale: 1, duration: 0.3 });
-      gsap.to(cursor, { scale: 1, duration: 0.2 });
-    });
-
-    window.addEventListener('scroll', () => {
-      if (!activeTarget) return;
-      const positions = cornerPositions(activeTarget);
-      corners.forEach((corner, i) => gsap.to(corner, { x: positions[i].x, y: positions[i].y, duration: 0.2, ease: 'power2.out' }));
-    }, { passive: true });
-
-    document.querySelectorAll('.cursor-target').forEach(target => {
-      target.addEventListener('mouseenter', () => {
-        if (activeTarget === target) return;
-        if (resumeTimeout) { clearTimeout(resumeTimeout); resumeTimeout = null; }
-
-        activeTarget = target;
-        gsap.killTweensOf(cursor, 'rotation');
-        if (spinTl) spinTl.pause();
-        gsap.set(cursor, { rotation: 0 });
-
-        const positions = cornerPositions(target);
-        corners.forEach((corner, i) => gsap.to(corner, { x: positions[i].x, y: positions[i].y, duration: 0.3, ease: 'power2.out' }));
+  // ---------- Ring + dot morph cursor ----------
+  const hasTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0,cursor=document.getElementById('targetCursor');
+  if(cursor&&typeof gsap!=='undefined'){
+    const ring=cursor.querySelector('.target-cursor-ring'),dot=cursor.querySelector('.target-cursor-dot');
+    if(hasTouch||window.matchMedia('(prefers-reduced-motion: reduce)').matches)cursor.remove();
+    else{
+      document.body.style.cursor='none';gsap.set(cursor,{xPercent:-50,yPercent:-50,x:innerWidth/2,y:innerHeight/2});
+      window.addEventListener('mousemove',e=>gsap.to(cursor,{x:e.clientX,y:e.clientY,duration:.13,ease:'power3.out',overwrite:true}));
+      window.addEventListener('mousedown',()=>gsap.to(ring,{scale:.88,duration:.15,overwrite:true}));window.addEventListener('mouseup',()=>gsap.to(ring,{scale:1,duration:.22,overwrite:true}));
+      document.querySelectorAll('a,button,.cursor-target,.project').forEach(target=>{
+        target.addEventListener('mouseenter',()=>{const r=target.getBoundingClientRect(),card=target.matches('.cursor-target,.project');gsap.to(ring,{width:card?r.width+16:Math.min(Math.max(r.width+16,42),110),height:card?r.height+16:Math.min(Math.max(r.height+16,42),70),borderRadius:card?'22px':'13px',borderColor:'rgba(151,195,245,.95)',duration:.34,ease:'power3.out',overwrite:true});gsap.to(dot,{scale:.72,duration:.2,overwrite:true})});
+        target.addEventListener('mouseleave',()=>{gsap.to(ring,{width:34,height:34,borderRadius:'50%',borderColor:'rgba(229,240,255,.9)',duration:.32,ease:'power3.out',overwrite:true});gsap.to(dot,{scale:1,duration:.22,overwrite:true})});
       });
-
-      target.addEventListener('mouseleave', () => {
-        if (activeTarget !== target) return;
-        activeTarget = null;
-
-        corners.forEach((corner, i) => gsap.to(corner, { x: resetPositions[i].x, y: resetPositions[i].y, duration: 0.3, ease: 'power3.out' }));
-
-        resumeTimeout = setTimeout(() => {
-          if (activeTarget) return;
-          const currentRotation = gsap.getProperty(cursor, 'rotation');
-          const normalized = ((currentRotation % 360) + 360) % 360;
-          gsap.to(cursor, {
-            rotation: normalized + 360,
-            duration: spinDuration * (1 - normalized / 360),
-            ease: 'none',
-            onComplete: createSpin
-          });
-        }, 50);
-      });
-    });
+      window.addEventListener('blur',()=>document.body.style.cursor='');window.addEventListener('focus',()=>document.body.style.cursor='none');
+    }
   }
 
   // ---------- Magic Bento: spotlight + border glow + tilt + magnetism + particles ----------
@@ -1326,6 +1255,25 @@
 </script>
 
 -e 
+
+<script>
+(function(){
+ const canvas=document.getElementById('voxelArcCanvas');if(!canvas)return;
+ const ctx=canvas.getContext('2d',{alpha:true}),reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;let w=0,h=0,dpr=1,raf=0,last=0,t=0;
+ function resize(){dpr=Math.min(window.devicePixelRatio||1,1.6);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
+ function draw(now){if(!reduce&&now-last<30){raf=requestAnimationFrame(draw);return}last=now;t+=reduce?0:.006;ctx.clearRect(0,0,w,h);const horizon=h*.48,cols=Math.max(28,Math.min(74,Math.floor(w/17))),rows=27,cell=w/cols;
+  for(let row=rows;row>=0;row--){const depth=(row+1)/(rows+1),base=horizon+Math.pow(depth,1.8)*h*.67,size=Math.max(1.1,cell*(.14+depth*.47));
+   for(let col=-2;col<=cols+1;col++){const x=col*cell+cell*.5,wave=Math.sin(col*.21+t*1.15+row*.12)*(.9+depth*5)+Math.sin(col*.075-t*.7+row*.19)*depth*8,arc=Math.pow((x-w*.5)/(w*.65),2)*h*.13,y=base+wave*depth*2.6+arc,fade=Math.max(0,Math.min(1,(depth-.03)*1.65))*Math.max(0,1-Math.abs(x-w*.5)/(w*.78)),a=(.035+depth*.21)*fade,hue=202+Math.sin(col*.1+row*.13+t)*8,lift=size*(.22+depth*.5);
+    ctx.fillStyle='hsla('+hue+',42%,'+(14+depth*21)+'%,'+a+')';ctx.fillRect(x-size*.5,y-size*.5,size,size);
+    ctx.fillStyle='hsla('+hue+',55%,'+(25+depth*30)+'%,'+(a*.8)+')';ctx.beginPath();ctx.moveTo(x-size*.5,y-size*.5);ctx.lineTo(x-size*.5+lift*.42,y-size*.5-lift*.42);ctx.lineTo(x+size*.5+lift*.42,y-size*.5-lift*.42);ctx.lineTo(x+size*.5,y-size*.5);ctx.closePath();ctx.fill();
+    ctx.fillStyle='rgba(150,190,230,'+(a*.45)+')';ctx.beginPath();ctx.moveTo(x+size*.5,y-size*.5);ctx.lineTo(x+size*.5+lift*.42,y-size*.5-lift*.42);ctx.lineTo(x+size*.5+lift*.42,y+size*.5-lift*.42);ctx.lineTo(x+size*.5,y+size*.5);ctx.closePath();ctx.fill();
+   }
+  }
+  const glow=ctx.createLinearGradient(0,horizon-40,0,horizon+140);glow.addColorStop(0,'rgba(100,145,195,0)');glow.addColorStop(.48,'rgba(100,145,195,.035)');glow.addColorStop(1,'rgba(4,7,12,0)');ctx.fillStyle=glow;ctx.fillRect(0,horizon-40,w,180);if(!reduce)raf=requestAnimationFrame(draw)
+ }
+ resize();window.addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(raf);else if(!reduce){last=0;raf=requestAnimationFrame(draw)}});if(reduce)draw(0);else raf=requestAnimationFrame(draw)
+})();
+</script>
 
 <script>
 (function(){
